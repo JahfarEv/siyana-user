@@ -10,7 +10,8 @@ import {
   updateProfile,
   User
 } from "firebase/auth";
-
+export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 export const fetchProducts = async () => {
   const querySnapshot = await getDocs(collection(db, "products"));
   return querySnapshot.docs.map((doc) => ({
@@ -60,23 +61,19 @@ export const fetchHomePageData = async (todayDate: string) => {
 };
 
 export const fetchCarouselItems = async () => {
-  console.log("🔥 Fetching carousel data...");
+  console.log("🔥 Fetching carousel data (no cache)...");
 
   try {
     const snapshot = await getDocs(collection(db, "homeCarousel"));
-    console.log("📌 Docs fetched count:", snapshot.size);
-
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
   } catch (error) {
-    console.error("❌ Firebase Fetch Error:", error);
-    throw error; // important so React Query shows the error
+    console.error("❌ Firebase error:", error);
+    throw error;
   }
 };
-
-
 
 export const fetchCategories = async (): Promise<Category[]> => {
   try {
@@ -170,7 +167,6 @@ export const fetchOffers = async () => {
 
 
 export const fetchGoldRate = async () => {
-  console.log("🔥 Fetching today's gold rate...");
 
   const todayDate = moment().format("YYYY-MM-DD");
 
@@ -189,8 +185,6 @@ export const fetchGoldRate = async () => {
     }
 
     const docData = snapshot.docs[0].data();
-    console.log("📌 Gold rate fetched:", docData);
-
     return { id: snapshot.docs[0].id, ...docData };
   } catch (error) {
     console.error("❌ Firebase Fetch Error (gold rate):", error);
