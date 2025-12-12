@@ -50,6 +50,19 @@ const Navbar: React.FC<NavbarProps> = ({
   const handleCartClick = () => {
     router.push("/cart"); // 👈 navigates to your cart page (e.g., /cart)
   };
+
+   const handleAuthClick = () => {
+    if (user) {
+      // User is logged in - show logout confirmation or directly logout
+      if (window.confirm("Are you sure you want to logout?")) {
+        onLogout?.();
+        setUserName('');
+      }
+    } else {
+      // User is not logged in - navigate to login
+      onLoginClick?.();
+    }
+  };
   console.log(userName, 'username')
 
   return (
@@ -89,11 +102,12 @@ const Navbar: React.FC<NavbarProps> = ({
 
         {/* Icons Section */}
         <div className="flex items-center space-x-4 text-gray-700">
-          <Heart
+          {/* <Heart
             size={24}
             className="cursor-pointer hover:text-teal-700 text-white"
             onClick={() => router.push("/wishlist")}
-          />
+          /> */}
+       <h1 className="mx-3 text-white">Welcome {userName}</h1>   
 
           <div
             className="relative cursor-pointer hover:text-teal-700"
@@ -106,11 +120,12 @@ const Navbar: React.FC<NavbarProps> = ({
               </span>
             )}
           </div>
+          {}
           <button
             onClick={user ? onLogout : onLoginClick}
             className="cursor-pointer hover:text-teal-700"
           >
-            <User size={24} className="text-white" />{userName}
+            <User size={24} className="text-white" />
           </button>
         </div>
       </div>
