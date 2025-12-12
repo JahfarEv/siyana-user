@@ -362,6 +362,7 @@ export interface OfferCardProps {
   discountPercentage: string;
   className?: string;
   image: string;
+  route:string,
 }
 
 export interface HeroBannerProps { }

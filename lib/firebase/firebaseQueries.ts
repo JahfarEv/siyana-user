@@ -167,7 +167,6 @@ export const fetchOffers = async () => {
 
 
 export const fetchGoldRate = async () => {
-  console.log("🔥 Fetching today's gold rate...");
 
   const todayDate = moment().format("YYYY-MM-DD");
 
@@ -186,8 +185,6 @@ export const fetchGoldRate = async () => {
     }
 
     const docData = snapshot.docs[0].data();
-    console.log("📌 Gold rate fetched:", docData);
-
     return { id: snapshot.docs[0].id, ...docData };
   } catch (error) {
     console.error("❌ Firebase Fetch Error (gold rate):", error);
