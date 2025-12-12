@@ -13,10 +13,6 @@ export default async function Home(): Promise<ReactElement> {
     fetchOffers(),
   ]);
 
-  console.log("Carousel:", carouselData);
-  console.log("Categories:", categories);
-  console.log("Offers:", offers);
-
   return (
     <HomeClient
       carouselData={carouselData}
