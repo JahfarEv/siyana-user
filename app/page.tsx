@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import { ReactElement } from "react";
 import HomeClient from "@/components/home/HomeClient";
 import { fetchCarouselItems, fetchCategories, fetchOffers } from "@/lib/firebase/firebaseQueries";
@@ -9,7 +12,10 @@ export default async function Home(): Promise<ReactElement> {
     fetchCategories(),
     fetchOffers(),
   ]);
-  console.log(carouselData,'datacou',categories,'catgoryes',offers,'offer')
+
+  console.log("Carousel:", carouselData);
+  console.log("Categories:", categories);
+  console.log("Offers:", offers);
 
   return (
     <HomeClient
