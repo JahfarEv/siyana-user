@@ -752,23 +752,23 @@ export const ALL_PRODUCTS: Product[] = [
 // Featured products are a subset of ALL_PRODUCTS
 export const FEATURED_PRODUCTS = ALL_PRODUCTS.filter(product => product.isFeatured);
 
-export const OFFERS: OfferCardProps[] = [
-  {
-    discountPercentage: '25%',
-    productName: 'Glowing Gold Rings',
-    className: 'bg-blue-900',
-    image: '/images/ring-7.jpg'
-  },
-  {
-    discountPercentage: '10%',
-    productName: 'Glowing Gold Earrings',
-    className: 'bg-gray-800',
-    image: '/images/earring-8.jpg'
-  },
-  {
-    discountPercentage: '15%',
-    productName: 'Glowing Gold Necklace',
-    className: 'bg-green-800',
-    image: '/images/pendant-7.jpeg'
-  },
-];
+// export const OFFERS: OfferCardProps[] = [
+//   {
+//     discountPercentage: '25%',
+//     productName: 'Glowing Gold Rings',
+//     className: 'bg-blue-900',
+//     image: '/images/ring-7.jpg'
+//   },
+//   {
+//     discountPercentage: '10%',
+//     productName: 'Glowing Gold Earrings',
+//     className: 'bg-gray-800',
+//     image: '/images/earring-8.jpg'
+//   },
+//   {
+//     discountPercentage: '15%',
+//     productName: 'Glowing Gold Necklace',
+//     className: 'bg-green-800',
+//     image: '/images/pendant-7.jpeg'
+//   },
+// ];

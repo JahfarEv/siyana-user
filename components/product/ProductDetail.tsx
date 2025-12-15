@@ -254,14 +254,7 @@ const ProductDetailPage: React.FC<ProductDetailProps> = ({
               </div>
 
               {/* Description Section */}
-              <div className="bg-white p-6 rounded-2xl border border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4 text-[#196b7a]">
-                  Product Description
-                </h2>
-                <p className="text-gray-700 leading-relaxed text-[15px]">
-                  {product.description}
-                </p>
-              </div>
+             
             </div>
 
             {/* Product Details Section */}
@@ -297,6 +290,15 @@ const ProductDetailPage: React.FC<ProductDetailProps> = ({
                     ({product?.reviewCount?.toLocaleString()} reviews)
                   </span>
                 </div>
+
+                 <div className="bg-white p-6 rounded-2xl border border-gray-200">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4 text-[#196b7a]">
+                  Product Description
+                </h2>
+                <p className="text-gray-700 leading-relaxed text-[15px]">
+                  {product.description}
+                </p>
+              </div>
               </div>
 
               {/* Pricing Section */}
