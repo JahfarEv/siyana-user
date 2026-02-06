@@ -52,8 +52,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CATEGORIES } from "@/lib/constants/Data";
-import { ReactElement } from "react";
+
 import { Category } from "@/types";
 interface CategoryGridProps {
   categories: Category[];

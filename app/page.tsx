@@ -4,6 +4,7 @@ export const revalidate = 0;
 import { ReactElement } from "react";
 import HomeClient from "@/components/home/HomeClient";
 import { fetchCarouselItems, fetchCategories, fetchOffers } from "@/lib/firebase/firebaseQueries";
+import Navbar from "@/components/layout/Navbar"; // Import Navbar
 
 export default async function Home(): Promise<ReactElement> {
   // Fetch all data in parallel on the server
@@ -14,10 +15,13 @@ export default async function Home(): Promise<ReactElement> {
   ]);
 
   return (
+    <> 
+
     <HomeClient
       carouselData={carouselData}
       categories={categories}
       offers={offers}
     />
+    </>
   );
 }

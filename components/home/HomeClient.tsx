@@ -104,8 +104,8 @@ export default function HomeClient({
       <div className="overflow-x-hidden">
         <main className="grow">
           <HeroBanner slides={carouselData} />
-          <OfferCards offers={offers} />
           <CategoryGrid categories={categories} />
+          <OfferCards offers={offers} />
         </main>
         <Footer />
       </div>
