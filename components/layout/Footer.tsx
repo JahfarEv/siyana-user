@@ -68,7 +68,7 @@ const Footer: React.FC<FooterProps> = () => {
               ["Gold_24", "Gold_22", "Gold_18"].map((karat) => (
                 <div key={karat} className="text-center">
                   <div className="text-lg font-extrabold text-white">
-                    {karat.replace("Gold_", "")}K Gold
+                    {karat.replace("Gold_", "")} Gold
                   </div>
                   <div className="text-white font-bold">
                     ₹{(goldRates as any)[karat]}

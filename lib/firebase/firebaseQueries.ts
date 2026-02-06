@@ -29,6 +29,20 @@ export const fetchHomeCarousel = async () => {
   }));
 };
 
+// lib/firebase/firebaseQueries.ts
+// Add this function for logout
+export function logoutUser(): void {
+  // Clear localStorage
+  localStorage.removeItem('siyana-user-name');
+  localStorage.removeItem('siyana-user-token');
+  localStorage.removeItem('siyana-cart'); // Optional: clear cart on logout
+  localStorage.removeItem('siyana-cart-count'); // Optional: clear cart count
+  
+  // You might also want to sign out from Firebase auth if you're using it
+  // import { auth } from "./firebaseConfig";
+  // await signOut(auth);
+}
+
 // Fetch Gold Rate for Today
 export const fetchTodaysGoldRate = async (todayDate: string) => {
   const goldQuery = query(

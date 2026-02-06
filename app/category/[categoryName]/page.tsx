@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import CategoryProducts from "@/components/product/CategoryProducts";
 import NavbarWrapper from "@/components/layout/NavbarWrapper";
 import Footer from "@/components/layout/Footer";
-import { CATEGORIES, ALL_PRODUCTS } from "@/lib/constants/Data";
-import { Product, ProductCategory } from "@/types";
 import { ReactElement } from "react";
 import { fetchCategories, fetchProductsByCategory } from "@/lib/firebase/firebaseQueries";
 
