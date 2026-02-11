@@ -58,7 +58,7 @@ const Footer: React.FC<FooterProps> = () => {
           <div className="flex flex-wrap justify-center gap-6 text-center ">
             {isLoading ? (
               // Skeleton loading for gold rates
-              ["24K", "22K", "18K"].map((karat) => (
+              ["1Gram", "8Gram", "18CT"].map((karat) => (
                 <div key={karat} className="text-center">
                   <Skeleton width={60} height={20} />
                   <Skeleton width={40} height={16} />
