@@ -297,7 +297,7 @@ const Footer: React.FC<FooterProps> = () => {
       </div>
 
       {/* Footer Links - Condensed on mobile */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 ">
         {/* Customer Service */}
         <div>
           <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Service</h4>
@@ -314,7 +314,7 @@ const Footer: React.FC<FooterProps> = () => {
         </div>
 
         {/* My Account - Hidden on very small screens? No, keep it but compact */}
-        <div>
+        {/* <div>
           <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Account</h4>
           <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
             {myAccount.map((item) => (
@@ -326,7 +326,7 @@ const Footer: React.FC<FooterProps> = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         {/* Social Media - Make it horizontal on mobile */}
         <div className="col-span-2 md:col-span-1">
@@ -373,15 +373,15 @@ const Footer: React.FC<FooterProps> = () => {
       {/* Copyright - More compact on mobile */}
       <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-teal-600 text-center text-xs md:text-sm text-teal-200">
         <p>
-          &copy; {new Date().getFullYear()} Siyana Gold. | 
-          <Link
+          &copy; {new Date().getFullYear()} Siyana Gold And Diamonds
+          {/* <Link
             href="https://jahfar.online"
             target="_blank"
             rel="noopener noreferrer"
             className="text-yellow-300 hover:text-yellow-400 font-medium transition-colors underline ml-1"
           >
             jahfar.online
-          </Link>
+          </Link> */}
         </p>
       </div>
     </footer>
