@@ -1446,25 +1446,25 @@ export default function CartPage(): ReactElement {
     return total;
   }, 0);
 
- const generateOrderMessage = (branch: Branch, orderIdParam: string): string => {
-    const itemsText = cart
-      .map(
-        (item) =>
-          `• ${item.name} - ${item.quantity}x ₹${item.price.toLocaleString()} = ₹${(
-            item.price * item.quantity
-          ).toLocaleString()}`
-      )
-      .join("\n");
+ const generateOrderMessage = (branch: Branch, orderId: string): string => {
+  const itemsText = cart
+    .map(
+      (item) =>
+        `• ${item.name} - ${item.quantity}x ₹${item.price.toLocaleString()} = ₹${(
+          item.price * item.quantity
+        ).toLocaleString()}`
+    )
+    .join("\n");
 
-    return `Hello Siyana ${branch.name.split(" ")[1]}! 👋
+  return `Hello Siyana ${branch.name.split(" ")[1]}! 👋
 
 I would like to place an order:
+
+Order ID: ${orderId}
 
 ${itemsText}
 
 Order Details:
-Order ID: #${orderIdParam}
-Subtotal: ₹${subtotal.toLocaleString()}
 Total: ₹${Math.round(grandTotal).toLocaleString()}
 
 Customer Details:
@@ -1472,7 +1472,7 @@ Name: ${user?.displayName || "Customer"}
 Email: ${user?.email || "Not provided"}
 
 Please confirm my order. Thank you! 😊`;
-  };
+};
 
   const handleCheckoutClick = (): void => {
     if (!user) {
@@ -1487,7 +1487,15 @@ Please confirm my order. Thank you! 😊`;
     setIsCheckingOut(true);
 
     try {
+
+        // Generate custom short order ID
+      const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
+      const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase(); // 4 random chars
+      const branchCode = branch.id.slice(0, 3).toUpperCase(); // First 3 letters of branch ID
+      const orderId = `SIY-${timestamp}-${branchCode}${randomChars}`;
+      
       // Call checkout API with selected branch
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -1499,6 +1507,8 @@ Please confirm my order. Thank you! 😊`;
           userName: user.displayName || "Customer",
           branchId: branch.id,
           branchName: branch.name,
+                    orderId: orderId, // Pass the custom order ID
+
         }),
       });
 
@@ -1520,7 +1530,7 @@ Please confirm my order. Thank you! 😊`;
       window.open(whatsappUrl, "_blank");
 
       // Show success modal
-      setOrderId(data.orderId);
+      setOrderId(orderId); // Use the custom order ID
       setOpen(true);
       localStorage.removeItem("siyana-cart-count");
     } catch (error: any) {
