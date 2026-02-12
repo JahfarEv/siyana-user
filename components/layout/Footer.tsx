@@ -263,11 +263,24 @@ const Footer: React.FC<FooterProps> = () => {
                 ))
               ) : goldRates && !isError ? (
                 goldTypes.map((item) => (
-                  <div key={item.key} className="text-center md:min-w-[150px]">
-                    <div className="text-sm md:text-lg font-extrabold text-white">
+                  <div
+                    key={item.key}
+                    className="text-center md:min-w-[150px] px-2 
+               bg-white 
+               rounded-xl 
+               shadow-md 
+               border border-yellow-300 
+               hover:shadow-lg 
+               hover:-translate-y-1 
+               transition-all duration-300"
+                  >
+                    {/* Label */}
+                    <div className="text-sm md:text-base font-semibold text-yellow-700 py-2 border-b border-yellow-200">
                       {item.label}
                     </div>
-                    <div className="text-sm md:text-base font-bold text-white">
+
+                    {/* Price */}
+                    <div className="text-lg md:text-xl font-bold text-gray-900 py-3">
                       ₹{(goldRates as any)[item.key]}
                     </div>
                   </div>

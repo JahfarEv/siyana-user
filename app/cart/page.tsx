@@ -1590,9 +1590,10 @@ Please confirm my order. Thank you! 😊`;
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Cart Items */}
-          <div className="lg:w-2/3">
+          <div className="w-full lg:w-2/3 mx-auto">
+            {" "}
             {cart.length === 0 ? (
-              <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
+              <div className="  p-8 text-center">
                 <div className="max-w-md mx-auto">
                   <div className="w-32 h-32 bg-linear-to-br from-amber-100 to-amber-200 rounded-full flex items-center justify-center mx-auto mb-6">
                     <ShoppingBag className="w-16 h-16 text-amber-600" />
