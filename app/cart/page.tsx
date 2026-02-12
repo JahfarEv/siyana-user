@@ -161,7 +161,6 @@
 //         }),
 //       });
 
-
 //       const data = await response.json();
 //       console.log(data, 'hello')
 //       if (!response.ok || !data.success) {
@@ -524,11 +523,6 @@
 //   );
 // }
 
-
-
-
-
-
 // "use client";
 // import { useState, useEffect } from "react";
 // import Link from "next/link";
@@ -688,7 +682,7 @@
 //     (total, item) => total + item.price * item.quantity,
 //     0
 //   );
- 
+
 //   const grandTotal = subtotal ;
 //   const savings = cart.reduce((total, item) => {
 //     if (item.originalPrice) {
@@ -1284,9 +1278,6 @@
 //   );
 // }
 
-
-
-
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -1340,24 +1331,24 @@ const BRANCHES: Branch[] = [
     id: "vengara",
     name: "Siyana Vengara",
     address: "Main Road, Vengara, Malappuram",
-    phoneNumber: "+919876543210",
-    whatsappNumber: "919539794665",
+    phoneNumber: "+918938916916",
+    whatsappNumber: "918938916916",
     timing: "9:30 AM - 9:30 PM",
   },
   {
     id: "othukkungal",
     name: "Siyana Othukkungal",
-    address: "Othukkungal, Near Railway Station, Malappuram",
-    phoneNumber: "+919876543211",
-    whatsappNumber: "919876543211",
+    address: "Othukkungal",
+    phoneNumber: "+917232916916",
+    whatsappNumber: "917232916916",
     timing: "10:00 AM - 10:00 PM",
   },
   {
-    id: "kiyicheri",
-    name: "Siyana Kiyicheri",
-    address: "Kiyicheri Main Road, Malappuram",
-    phoneNumber: "+919876543212",
-    whatsappNumber: "919876543212",
+    id: "kizhisseri",
+    name: "Siyana kizhisseri",
+    address: "kizhisseri",
+    phoneNumber: "+917699916916",
+    whatsappNumber: "917699916916",
     timing: "9:00 AM - 9:00 PM",
   },
 ];
@@ -1369,10 +1360,11 @@ export default function CartPage(): ReactElement {
   const [open, setOpen] = useState<boolean>(false);
   const [orderId, setOrderId] = useState<string>("");
   const [removingItem, setRemovingItem] = useState<string | number | null>(
-    null
+    null,
   );
   const [isCheckingOut, setIsCheckingOut] = useState<boolean>(false);
-  const [showBranchSelection, setShowBranchSelection] = useState<boolean>(false);
+  const [showBranchSelection, setShowBranchSelection] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -1404,8 +1396,8 @@ export default function CartPage(): ReactElement {
 
     setCart((prev) =>
       prev.map((item) =>
-        item.id === productId ? { ...item, quantity: newQty } : item
-      )
+        item.id === productId ? { ...item, quantity: newQty } : item,
+      ),
     );
   };
 
@@ -1435,10 +1427,10 @@ export default function CartPage(): ReactElement {
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const subtotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
- 
-  const grandTotal = subtotal ;
+
+  const grandTotal = subtotal;
   const savings = cart.reduce((total, item) => {
     if (item.originalPrice) {
       return total + (item.originalPrice - item.price) * item.quantity;
@@ -1446,17 +1438,19 @@ export default function CartPage(): ReactElement {
     return total;
   }, 0);
 
- const generateOrderMessage = (branch: Branch, orderId: string): string => {
-  const itemsText = cart
-    .map(
-      (item) =>
-        `• ${item.name} - ${item.quantity}x ₹${item.price.toLocaleString()} = ₹${(
-          item.price * item.quantity
-        ).toLocaleString()}`
-    )
-    .join("\n");
+  const generateOrderMessage = (branch: Branch, orderId: string): string => {
+    const itemsText = cart
+      .map(
+        (item) =>
+          `• ${item.name} - ${
+            item.quantity
+          }x ₹${item.price.toLocaleString()} = ₹${(
+            item.price * item.quantity
+          ).toLocaleString()}`,
+      )
+      .join("\n");
 
-  return `Hello Siyana ${branch.name.split(" ")[1]}! 👋
+    return `Hello Siyana ${branch.name.split(" ")[1]}! 👋
 
 I would like to place an order:
 
@@ -1472,7 +1466,7 @@ Name: ${user?.displayName || "Customer"}
 Email: ${user?.email || "Not provided"}
 
 Please confirm my order. Thank you! 😊`;
-};
+  };
 
   const handleCheckoutClick = (): void => {
     if (!user) {
@@ -1487,13 +1481,15 @@ Please confirm my order. Thank you! 😊`;
     setIsCheckingOut(true);
 
     try {
-
-        // Generate custom short order ID
+      // Generate custom short order ID
       const timestamp = Date.now().toString().slice(-6); // Last 6 digits of timestamp
-      const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase(); // 4 random chars
+      const randomChars = Math.random()
+        .toString(36)
+        .substring(2, 6)
+        .toUpperCase(); // 4 random chars
       const branchCode = branch.id.slice(0, 3).toUpperCase(); // First 3 letters of branch ID
       const orderId = `SIY-${timestamp}-${branchCode}${randomChars}`;
-      
+
       // Call checkout API with selected branch
 
       const response = await fetch("/api/checkout", {
@@ -1507,8 +1503,7 @@ Please confirm my order. Thank you! 😊`;
           userName: user.displayName || "Customer",
           branchId: branch.id,
           branchName: branch.name,
-                    orderId: orderId, // Pass the custom order ID
-
+          orderId: orderId, // Pass the custom order ID
         }),
       });
 
@@ -1519,7 +1514,9 @@ Please confirm my order. Thank you! 😊`;
       const generatedOrderId = data.orderId;
 
       // Generate WhatsApp URL
-      const message = encodeURIComponent(generateOrderMessage(branch, generatedOrderId));
+      const message = encodeURIComponent(
+        generateOrderMessage(branch, generatedOrderId),
+      );
       const whatsappUrl = `https://wa.me/${branch.whatsappNumber}?text=${message}`;
 
       // Clear cart
@@ -1547,7 +1544,9 @@ Please confirm my order. Thank you! 😊`;
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
-      {open && <SuccessModal orderId={orderId} onClose={() => setOpen(false)} />}
+      {open && (
+        <SuccessModal orderId={orderId} onClose={() => setOpen(false)} />
+      )}
       {showBranchSelection && (
         <BranchSelectionModal
           branches={BRANCHES}
@@ -1628,10 +1627,11 @@ Please confirm my order. Thank you! 😊`;
                 {cart.map((item) => (
                   <div
                     key={item.id}
-                    className={`bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 ${removingItem === item.id
-                      ? "opacity-0 scale-95"
-                      : "opacity-100 scale-100"
-                      }`}
+                    className={`bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 ${
+                      removingItem === item.id
+                        ? "opacity-0 scale-95"
+                        : "opacity-100 scale-100"
+                    }`}
                   >
                     <div className="p-6">
                       <div className="flex items-start gap-6">
@@ -1642,7 +1642,8 @@ Please confirm my order. Thank you! 😊`;
                               src={
                                 typeof item?.images?.[0] === "string"
                                   ? item.images[0]
-                                  : item?.images?.[0]?.url || "/images/placeholder.jpg"
+                                  : item?.images?.[0]?.url ||
+                                    "/images/placeholder.jpg"
                               }
                               alt={item.name}
                               width={96}
@@ -1788,29 +1789,29 @@ Please confirm my order. Thank you! 😊`;
                 </div>
 
                 {/* Trust Badges */}
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-gray-200 mb-5">
-                <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
-                  <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-gray-900">
-                    Certified Quality
-                  </p>
-                  <p className="text-xs text-gray-600">BIS Hallmarked</p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-gray-200 mb-5">
+                  <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
+                    <CheckCircle className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
+                    <p className="text-sm font-semibold text-gray-900">
+                      Certified Quality
+                    </p>
+                    <p className="text-xs text-gray-600">BIS Hallmarked</p>
+                  </div>
+                  <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
+                    <Gem className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
+                    <p className="text-sm font-semibold text-gray-900">
+                      Diamond Certificate
+                    </p>
+                    <p className="text-xs text-gray-600">IGI/GIA Certified</p>
+                  </div>
+                  <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
+                    <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
+                    <p className="text-sm font-semibold text-gray-900">
+                      Lifetime Polish
+                    </p>
+                    <p className="text-xs text-gray-600">Free Maintenance</p>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
-                  <Gem className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-gray-900">
-                    Diamond Certificate
-                  </p>
-                  <p className="text-xs text-gray-600">IGI/GIA Certified</p>
-                </div>
-                <div className="text-center p-4 bg-white rounded-xl border border-gray-200">
-                  <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 text-[#196b7a] mx-auto mb-2" />
-                  <p className="text-sm font-semibold text-gray-900">
-                    Lifetime Polish
-                  </p>
-                  <p className="text-xs text-gray-600">Free Maintenance</p>
-                </div>
-              </div>
                 {/* Action Buttons */}
                 <div className="space-y-3">
                   <button
@@ -1883,7 +1884,8 @@ function BranchSelectionModal({
   onClose,
 }: BranchSelectionModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md bg-white/10">
+      {" "}
       <motion.div
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -1932,7 +1934,7 @@ function BranchSelectionModal({
                       {branch.name}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      {branch.address.split(',')[0]}
+                      {branch.address.split(",")[0]}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -1973,10 +1975,7 @@ type SuccessModalProps = {
   onClose: () => void;
 };
 
-function SuccessModal({
-  orderId,
-  onClose,
-}: SuccessModalProps) {
+function SuccessModal({ orderId, onClose }: SuccessModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <motion.div
@@ -2008,7 +2007,8 @@ function SuccessModal({
             Order Placed!
           </h3>
           <p className="text-gray-600 mb-4">
-            Your order ID: <span className="font-bold text-[#196b7a]">#{orderId}</span>
+            Your order ID:{" "}
+            <span className="font-bold text-[#196b7a]">#{orderId}</span>
           </p>
           <p className="text-sm text-gray-500 mb-6">
             Thank you for your order. We'll contact you soon.

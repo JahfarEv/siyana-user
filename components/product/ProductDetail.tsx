@@ -542,8 +542,13 @@ const ProductDetailPage: React.FC<ProductDetailProps> = ({
     setIsAddingToCart(true);
 
     try {
-      const user = auth.currentUser;
-      if (!user) return;
+     const user = auth.currentUser;
+
+if (!user) {
+  toast.error("User not authenticated. Please login again.");
+  setIsAddingToCart(false);
+  return;
+}
 
       await addToCart(user.uid, product, quantity);
 
