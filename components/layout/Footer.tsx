@@ -10,7 +10,7 @@
 //   Facebook,
 // } from "lucide-react";
 // import { useGoldRate } from "@/hooks/useCarousel";
-// import Skeleton from "react-loading-skeleton"; 
+// import Skeleton from "react-loading-skeleton";
 // import "react-loading-skeleton/dist/skeleton.css";
 // import Link from "next/link";
 
@@ -124,8 +124,6 @@
 //           </ul>
 //         </div>
 
-     
-
 //         <div>
 //           <h4 className="text-lg font-bold mb-4">Follow us on</h4>
 //           <ul className="space-y-3 text-sm">
@@ -183,8 +181,6 @@
 // };
 
 // export default Footer;
-
-
 
 "use client";
 import React from "react";
@@ -297,10 +293,12 @@ const Footer: React.FC<FooterProps> = () => {
       </div>
 
       {/* Footer Links - Condensed on mobile */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 ">
+      <div className="grid grid-cols-3 gap-4 md:gap-8 ">
         {/* Customer Service */}
         <div>
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Service</h4>
+          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+            Service
+          </h4>
           <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
             {customerService.map((item) => (
               <li
@@ -313,25 +311,12 @@ const Footer: React.FC<FooterProps> = () => {
           </ul>
         </div>
 
-        {/* My Account - Hidden on very small screens? No, keep it but compact */}
-        {/* <div>
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Account</h4>
-          <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
-            {myAccount.map((item) => (
-              <li
-                key={item}
-                className="hover:text-yellow-300 cursor-pointer transition-colors"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div> */}
-
         {/* Social Media - Make it horizontal on mobile */}
-        <div className="col-span-2 md:col-span-1">
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Follow us</h4>
-          <ul className="flex flex-row md:flex-col gap-3 md:gap-2 text-xs md:text-sm">
+        <div className="col-span-1">
+          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+            Follow us
+          </h4>
+          <ul className="flex flex-col gap-3 md:gap-2 text-xs md:text-sm">
             {socialMediaLinks.map((social) => (
               <li key={social.name}>
                 <Link
@@ -351,20 +336,24 @@ const Footer: React.FC<FooterProps> = () => {
         </div>
 
         {/* Contact Info - Condensed */}
-        <div className="col-span-2 md:col-span-1">
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">Contact</h4>
+        <div className="col-span-1">
+          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+            Contact
+          </h4>
           <ul className="space-y-1 md:space-y-3 text-xs md:text-sm">
             <li className="flex items-center">
-              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" /> 
+              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
               <span className="truncate">+91 8938916916</span>
             </li>
             <li className="flex items-center">
-              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" /> 
+              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
               <span className="truncate">+91 8938916916</span>
             </li>
             <li className="flex items-center">
               <Mail size={14} className="mr-1 md:mr-2 flex-shrink-0" />
-              <span className="truncate text-xs">siyanagoldndiamonds@gmail.com</span>
+              <span className="truncate text-xs">
+                siyanagoldndiamonds@gmail.com
+              </span>
             </li>
           </ul>
         </div>
