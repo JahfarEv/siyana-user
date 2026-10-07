@@ -269,6 +269,7 @@ export interface Product extends BaseEntity {
   images: string[];
   features: string[];
   specifications: Record<string, string>;
+  weight?: string | number;
   tags: string[];
   sku?: string;
   availability?: "In Stock" | "Low Stock" | "Out of Stock";

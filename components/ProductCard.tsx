@@ -836,7 +836,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, ShoppingBag, Heart, Check } from "lucide-react";
+import { Eye, ShoppingBag, Heart, Check, Loader2 } from "lucide-react";
 import { ProductCardProps } from "@/types";
 import { ReactElement, useState, useEffect } from "react";
 import { auth } from "@/lib/firebase/firebaseConfig";
@@ -881,6 +881,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const imageUrl = getImageUrl();
+
+  // Reset the loader when a card receives a different product image.
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [imageUrl]);
 
   const handleImageError = () => {
     setImageError(true);
@@ -967,8 +973,23 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }, [product.id]);
 
   // Calculate discount percentage
-  const discountPercentage = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const rawPrice = product.price as unknown;
+  const priceValue = Number(rawPrice);
+  const hasPrice =
+    rawPrice !== null &&
+    rawPrice !== undefined &&
+    rawPrice !== "" &&
+    Number.isFinite(priceValue);
+  const rawOriginalPrice = product.originalPrice as unknown;
+  const originalPriceValue = Number(rawOriginalPrice);
+  const hasOriginalPrice =
+    rawOriginalPrice !== null &&
+    rawOriginalPrice !== undefined &&
+    rawOriginalPrice !== "" &&
+    Number.isFinite(originalPriceValue);
+
+  const discountPercentage = hasOriginalPrice && hasPrice
+    ? Math.round(((originalPriceValue - priceValue) / originalPriceValue) * 100)
     : 0;
 
   if (viewMode === "list") {
@@ -978,7 +999,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {/* Image - Mobile optimized */}
           <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
             {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
+              <div className="absolute inset-0 bg-gray-200 rounded-lg flex items-center justify-center">
+                <Loader2 className="w-6 h-6 text-[#196b7a] animate-spin" aria-label="Loading product image" />
+              </div>
             )}
             <Image
               src={imageError ? "/images/placeholder.jpg" : imageUrl}
@@ -1021,12 +1044,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
             {/* Price */}
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
-              <span className="text-[#196b7a] font-bold text-base sm:text-lg">
-                ₹{product.price.toLocaleString()}
-              </span>
-              {product.originalPrice && (
+              {hasPrice && <span className="text-[#196b7a] font-bold text-base sm:text-lg">
+                ₹{priceValue.toLocaleString()}
+              </span>}
+              {hasOriginalPrice && (
                 <span className="text-gray-500 line-through text-sm">
-                  ₹{product.originalPrice.toLocaleString()}
+                  ₹{originalPriceValue.toLocaleString()}
                 </span>
               )}
             </div>
@@ -1099,7 +1122,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Link href={`/product/${product.id}`} className="block relative aspect-square bg-gray-100">
         {/* Loading skeleton */}
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+          <div className="absolute inset-0 bg-gray-200 flex items-center justify-center">
+            <Loader2 className="w-10 h-10 text-[#196b7a] animate-spin" aria-label="Loading product image" />
+          </div>
         )}
 
         {/* Product Image */}
@@ -1157,12 +1182,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
           {/* Price - Mobile sized */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[#196b7a] font-bold text-base sm:text-lg">
-              ₹{product.price.toLocaleString()}
-            </span>
-            {product.originalPrice && (
+            {hasPrice && <span className="text-[#196b7a] font-bold text-base sm:text-lg">
+              ₹{priceValue.toLocaleString()}
+            </span>}
+            {hasOriginalPrice && (
               <span className="text-gray-500 line-through text-xs sm:text-sm">
-                ₹{product.originalPrice.toLocaleString()}
+                ₹{originalPriceValue.toLocaleString()}
               </span>
             )}
           </div>
