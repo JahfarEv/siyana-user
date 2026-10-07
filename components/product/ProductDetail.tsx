@@ -471,6 +471,7 @@ import {
   AlertCircle,
   Package,
   CheckCircle,
+  Loader2,
 } from "lucide-react";
 import { ReactElement } from "react";
 import AuthModal from "../auth/LoginModal";
@@ -486,6 +487,7 @@ const ProductDetailPage: React.FC<ProductDetailProps> = ({
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [imageError, setImageError] = useState<boolean>(false);
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
   const [isInCart, setIsInCart] = useState<boolean>(false);
@@ -595,6 +597,11 @@ if (!user) {
   };
 
   useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [product.id, selectedImage]);
+
+  useEffect(() => {
     const checkCart = async () => {
       const user = auth.currentUser;
       if (!user) return;
@@ -607,13 +614,33 @@ if (!user) {
     checkCart();
   }, [product.id]);
 
-  const currentPrice = `₹${product.price.toLocaleString()}`;
-  const originalPrice = product.originalPrice
-    ? `₹${product.originalPrice.toLocaleString()}`
+  const rawPrice = product.price as unknown;
+  const priceValue = Number(rawPrice);
+  const hasPrice =
+    rawPrice !== null &&
+    rawPrice !== undefined &&
+    rawPrice !== "" &&
+    Number.isFinite(priceValue);
+  const rawOriginalPrice = product.originalPrice as unknown;
+  const originalPriceValue = Number(rawOriginalPrice);
+  const hasOriginalPrice =
+    rawOriginalPrice !== null &&
+    rawOriginalPrice !== undefined &&
+    rawOriginalPrice !== "" &&
+    Number.isFinite(originalPriceValue);
+  const currentPrice = hasPrice
+    ? `₹${priceValue.toLocaleString()}`
     : null;
-  const discountPercentage = product.originalPrice
+  const productWeight =
+    product.weight ??
+    product.specifications?.Weight ??
+    product.specifications?.weight;
+  const originalPrice = hasOriginalPrice
+    ? `₹${originalPriceValue.toLocaleString()}`
+    : null;
+  const discountPercentage = hasOriginalPrice && hasPrice
     ? Math.round(
-        ((product.originalPrice - product.price) / product.originalPrice) * 100,
+        ((originalPriceValue - priceValue) / originalPriceValue) * 100,
       )
     : 0;
 
@@ -628,7 +655,11 @@ if (!user) {
               <div className="bg-white rounded-2xl p-4 sm:p-6 ">
                 <div className="relative aspect-square max-w-2xl mx-auto">
                   <Image
-                    src={getImageUrl(product.images[selectedImage])}
+                    src={
+                      imageError
+                        ? "/images/placeholder.jpg"
+                        : getImageUrl(product.images[selectedImage])
+                    }
                     alt={product.name}
                     fill
                     className={`rounded-xl object-contain transition-all duration-500 ${
@@ -637,10 +668,19 @@ if (!user) {
                         : "opacity-0 scale-95"
                     }`}
                     onLoad={() => setImageLoaded(true)}
+                    onError={() => {
+                      setImageError(true);
+                      setImageLoaded(true);
+                    }}
                     priority
                   />
                   {!imageLoaded && (
-                    <div className="absolute inset-0 bg-gray-100 animate-pulse rounded-xl" />
+                    <div className="absolute inset-0 bg-gray-100 rounded-xl flex items-center justify-center">
+                      <Loader2
+                        className="w-10 h-10 text-[#196b7a] animate-spin"
+                        aria-label="Loading product image"
+                      />
+                    </div>
                   )}
 
                   {/* Premium Badges */}
@@ -732,6 +772,13 @@ if (!user) {
                     <span className="font-medium">{product.category.name}</span>
                   </p>
                 )}
+                {productWeight !== undefined &&
+                  productWeight !== null &&
+                  productWeight !== "" && (
+                    <p className="text-gray-600 text-sm sm:text-base">
+                      Weight: <span className="font-medium">{productWeight}</span>
+                    </p>
+                  )}
               </div>
    <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200">
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4 text-[#196b7a] flex items-center gap-2">
@@ -743,6 +790,7 @@ if (!user) {
                 </p>
               </div>
               {/* Pricing Section */}
+              {hasPrice && (
               <div className="bg-gradient-to-r from-gray-50 to-white p-4 sm:p-6 rounded-2xl border border-gray-200">
                 <div className="flex items-baseline gap-4">
                   <span className="text-3xl sm:text-4xl font-bold text-gray-900">
@@ -765,6 +813,7 @@ if (!user) {
                   Inclusive of all taxes • Free Shipping
                 </p> */}
               </div>
+              )}
 
               {/* Quantity Selector */}
               <div className="bg-white p-4 sm:p-6 rounded-2xl border border-gray-200">
