@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 // Type for carousel items
-interface CarouselItem {
+export interface CarouselItem {
   id: string;
   url?: string;
   title?: string;

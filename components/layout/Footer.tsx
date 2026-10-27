@@ -198,9 +198,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
 
-interface FooterProps {}
-
-const Footer: React.FC<FooterProps> = () => {
+const Footer: React.FC = () => {
   const customerService: string[] = ["Contact us", "Help"];
   const myAccount: string[] = [
     "My Account",
@@ -230,9 +228,21 @@ const Footer: React.FC<FooterProps> = () => {
   ];
   const { data: goldRates, isLoading, isError } = useGoldRate();
 
-  const createdDate = (goldRates as any)?.createdAt
-    ? new Date((goldRates as any).createdAt.seconds * 1000)
-    : null;
+  const goldRateData = goldRates as Record<string, unknown> | null | undefined;
+  const createdAt = goldRateData?.createdAt;
+  const createdAtSeconds =
+    createdAt &&
+    typeof createdAt === "object" &&
+    "seconds" in createdAt &&
+    typeof createdAt.seconds === "number"
+      ? createdAt.seconds
+      : null;
+  const createdDate =
+    createdAtSeconds === null ? null : new Date(createdAtSeconds * 1000);
+  const getGoldRateValue = (key: string): string | number => {
+    const value = goldRateData?.[key];
+    return typeof value === "string" || typeof value === "number" ? value : "—";
+  };
   const goldTypes = [
     { key: "Gold_24", label: "1 Gram" },
     { key: "Gold_22", label: "8 Gram" },
@@ -281,7 +291,7 @@ const Footer: React.FC<FooterProps> = () => {
 
                     {/* Price */}
                     <div className="text-lg md:text-xl font-bold text-gray-900 py-3">
-                      ₹{(goldRates as any)[item.key]}
+                      ₹{getGoldRateValue(item.key)}
                     </div>
                   </div>
                 ))

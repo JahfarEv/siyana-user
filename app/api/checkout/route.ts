@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createOrder, getUserCart, clearCart } from "@/lib/firebase/firebaseQueries";
+import { CartItem } from "@/types";
 
 // WhatsApp business number - update this with your actual number
 const WHATSAPP_NUMBER = "919876543210"; // Replace with actual number (include country code without +)
@@ -57,10 +58,13 @@ export async function POST(request: NextRequest) {
             whatsappUrl,
             message: "Order created successfully. Opening WhatsApp...",
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Checkout error:", error);
         return NextResponse.json(
-            { success: false, message: error.message || "Checkout failed" },
+            {
+                success: false,
+                message: error instanceof Error ? error.message : "Checkout failed",
+            },
             { status: 500 }
         );
     }
@@ -69,7 +73,7 @@ export async function POST(request: NextRequest) {
 function generateWhatsAppMessage(
     orderId: string,
     userName: string,
-    cartItems: any[],
+    cartItems: CartItem[],
     totalAmount: number
 ): string {
     let message = `Hello! I'd like to place an order from Siyana Gold & Diamonds:\n\n`;

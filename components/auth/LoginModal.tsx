@@ -357,7 +357,7 @@ const handleLoginSubmit = async (e: React.FormEvent) => {
     const { token, user } = await loginUser(loginForm.email, loginForm.password);
 
     // Save token to localStorage
-    localStorage.setItem('siyana-user-name', (user as any).name || '');
+    localStorage.setItem('siyana-user-name', user.name || '');
     localStorage.setItem("siyana-user-token", token);
     
     // Close modal FIRST
@@ -383,11 +383,11 @@ const handleLoginSubmit = async (e: React.FormEvent) => {
       });
     }, 300); // Small delay to ensure modal is fully closed
     
-  } catch (err: any) {
+  } catch (err: unknown) {
     // Show error alert
     Swal.fire({
       title: 'Error!',
-      text: err.message || 'Login failed',
+      text: err instanceof Error ? err.message : 'Login failed',
       icon: 'error',
       confirmButtonColor: '#196b7a',
       confirmButtonText: 'OK',
@@ -428,9 +428,13 @@ const handleLoginSubmit = async (e: React.FormEvent) => {
         mobile: "",
       });
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Show error alert
-      await showAlert('Error!', err.message || 'Signup failed', 'error');
+      await showAlert(
+        'Error!',
+        err instanceof Error ? err.message : 'Signup failed',
+        'error'
+      );
     } finally {
       setLoading(false);
     }
@@ -576,7 +580,7 @@ const handleLoginSubmit = async (e: React.FormEvent) => {
             </button>
 
             <p className="text-center text-sm text-gray-600 mt-4">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button
                 type="button"
                 onClick={switchToSignup}

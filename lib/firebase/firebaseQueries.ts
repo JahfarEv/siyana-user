@@ -1,14 +1,11 @@
 // firebaseQueries.js
 import { collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase/firebaseConfig";
-import { Category } from "@/types";
-import { Product } from "@/types";
-import moment from "moment";
+import { CartItem, Category, Product } from "@/types";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
-  User
 } from "firebase/auth";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -118,18 +115,28 @@ export const fetchCategories = async (): Promise<Category[]> => {
 export const fetchProductsByCategory = async (categoryId: string): Promise<Product[]> => {
   try {
     const productsRef = collection(db, "products");
+    const [directSnap, nestedSnap] = await Promise.all([
+      getDocs(query(productsRef, where("category_id", "==", categoryId))),
+      getDocs(query(productsRef, where("category.id", "==", categoryId))),
+    ]);
 
-    // try direct category_id
-    const directQuery = query(productsRef, where("category_id", "==", categoryId));
-    const directSnap = await getDocs(directQuery);
-    if (!directSnap.empty) {
-      return directSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Product[];
+    const productsById = new Map(
+      directSnap.docs.map((productDoc) => [
+        productDoc.id,
+        { id: productDoc.id, ...productDoc.data() },
+      ])
+    );
+
+    for (const productDoc of nestedSnap.docs) {
+      if (!productsById.has(productDoc.id)) {
+        productsById.set(productDoc.id, {
+          id: productDoc.id,
+          ...productDoc.data(),
+        });
+      }
     }
 
-    // try nested category.id
-    const nestedQuery = query(productsRef, where("category.id", "==", categoryId));
-    const nestedSnap = await getDocs(nestedQuery);
-    return nestedSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as Product[];
+    return Array.from(productsById.values()) as Product[];
   } catch (error) {
     console.error("❌ Product Fetch Error:", error);
     throw new Error("Failed to fetch products");
@@ -181,9 +188,6 @@ export const fetchOffers = async () => {
 
 
 export const fetchGoldRate = async () => {
-
-  const todayDate = moment().format("YYYY-MM-DD");
-
   try {
     const q = query(
       collection(db, "goldRates"),
@@ -264,14 +268,25 @@ export const loginUser = async (identifier: string, password: string) => {
 
     const token = await user.getIdToken();
 
-    return { token, user: { uid: user.uid, ...userData } };
-  } catch (error: any) {
+    return {
+      token,
+      user: {
+        uid: user.uid,
+        ...userData,
+        name: typeof userData.name === "string" ? userData.name : "",
+      },
+    };
+  } catch (error: unknown) {
     console.error("Login Error:", error);
-    throw new Error(error.message || "Login failed");
+    throw new Error(error instanceof Error ? error.message : "Login failed");
   }
 };
-export const addToCart = async (uid: string, product: any, quantity = 1) => {
-  const cartRef = doc(db, "users", uid, "cart", product.id);
+export const addToCart = async (
+  uid: string,
+  product: Product,
+  quantity = 1
+) => {
+  const cartRef = doc(db, "users", uid, "cart", String(product.id));
   const cartSnap = await getDoc(cartRef);
 
   if (cartSnap.exists()) {
@@ -290,7 +305,7 @@ export const addToCart = async (uid: string, product: any, quantity = 1) => {
 
 
 
-export const getUserCart = async (id: string) => {
+export const getUserCart = async (id: string): Promise<CartItem[]> => {
   console.log('hello ', id)
   if (!id) return [];
 
@@ -298,10 +313,10 @@ export const getUserCart = async (id: string) => {
 
   try {
     const snapshot = await getDocs(cartCollectionRef);
-    const cartItems: any[] = [];
+    const cartItems: CartItem[] = [];
 
     snapshot.forEach((docItem) => {
-      cartItems.push({ id: docItem.id, ...docItem.data() });
+      cartItems.push({ id: docItem.id, ...docItem.data() } as CartItem);
     });
 
     // Save count only in browser
@@ -336,9 +351,12 @@ export const clearCart = async (uid: string) => {
 };
 
 
-export const addToWishlist = async (userId: string, product: any) => {
+export const addToWishlist = async (userId: string, product: Product) => {
   try {
-    const wishlistRef = doc(collection(db, "users", userId, "wishlist"), product.id);
+    const wishlistRef = doc(
+      collection(db, "users", userId, "wishlist"),
+      String(product.id)
+    );
     await setDoc(wishlistRef, {
       ...product,
       addedAt: new Date(),
@@ -355,7 +373,7 @@ export const createOrder = async (
   userId: string,
   userEmail: string,
   userName: string,
-  cartItems: any[]
+  cartItems: CartItem[]
 ) => {
   try {
     // Generate order ID
