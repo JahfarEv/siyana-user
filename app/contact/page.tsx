@@ -84,7 +84,7 @@ export default function ContactPage():  ReactElement {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl font-bold text-white mb-6">Contact Us</h1>
           <p className="text-xl text-amber-100 max-w-3xl mx-auto">
-            Get in touch with us. We're here to help you with all your jewelry needs.
+            Get in touch with us. We&apos;re here to help you with all your jewelry needs.
           </p>
         </div>
       </section>
@@ -96,7 +96,7 @@ export default function ContactPage():  ReactElement {
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
             <p className="text-lg text-gray-600 mb-8">
               Have questions about our jewelry collection? Need assistance with your order? 
-              We're here to help! Reach out to us through any of the following methods.
+              We&apos;re here to help! Reach out to us through any of the following methods.
             </p>
 
             <div className="space-y-6">
@@ -147,7 +147,7 @@ export default function ContactPage():  ReactElement {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
                 <p className="text-gray-600 mb-6">
-                  Thank you for contacting us. We'll get back to you within 24 hours.
+                  Thank you for contacting us. We&apos;ll get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}

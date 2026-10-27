@@ -590,9 +590,16 @@ if (!user) {
     );
   };
 
-  const getImageUrl = (image: any): string => {
+  const getImageUrl = (image: unknown): string => {
     if (typeof image === "string") return image;
-    if (typeof image === "object" && image.url) return image.url;
+    if (
+      image &&
+      typeof image === "object" &&
+      "url" in image &&
+      typeof image.url === "string"
+    ) {
+      return image.url;
+    }
     return "/images/placeholder.jpg";
   };
 
@@ -607,7 +614,7 @@ if (!user) {
       if (!user) return;
 
       const cartItems = await getUserCart(user.uid);
-      const exists = cartItems.some((item: any) => item.id === product.id);
+      const exists = cartItems.some((item) => item.id === product.id);
       setIsInCart(exists);
     };
 

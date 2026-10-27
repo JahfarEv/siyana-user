@@ -84,13 +84,13 @@ const NotFoundPage = () => {
       >
         {/* Subtle background dots */}
         <div className="absolute inset-0 pointer-events-none">
-          {[...Array(19)].map((_, i) => (
+          {Array.from({ length: 19 }, (_, i) => (
             <span
               key={i}
               className="absolute w-2 h-2 bg-[#b1effa] rounded-full"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
+                left: `${(i * 37 + 13) % 100}%`,
+                top: `${(i * 61 + 29) % 100}%`,
               }}
             />
           ))}

@@ -1,18 +1,79 @@
 "use client";
 
-import React, { ReactElement, useState, useEffect } from "react";
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import Navbar from "@/components/layout/Navbar";
-import HeroBanner from "@/components/home/HeroBanner";
+import HeroBanner, { type CarouselItem } from "@/components/home/HeroBanner";
 import OfferCards from "@/components/home/OfferCard";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import Footer from "@/components/layout/Footer";
 import LoginModal from "@/components/auth/LoginModal";
-import { User, CartItem, Product, Category } from "@/types";
+import { User, CartItem, Product, Category, OfferCardProps } from "@/types";
 
 interface HomeClientProps {
-  carouselData: any[]; // Replace 'any' with specific type if available
+  carouselData: CarouselItem[];
   categories: Category[];
-  offers: any[]; // Replace 'any' with specific type if available
+  offers: OfferCardProps[];
+}
+
+const LOCAL_STORAGE_CHANGE_EVENT = "siyana:local-storage-change";
+
+const subscribeToLocalStorage = (callback: () => void): (() => void) => {
+  window.addEventListener("storage", callback);
+  window.addEventListener(LOCAL_STORAGE_CHANGE_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(LOCAL_STORAGE_CHANGE_EVENT, callback);
+  };
+};
+
+function useLocalStorageState<T>(
+  key: string,
+  initialValue: T
+): [T, Dispatch<SetStateAction<T>>] {
+  const fallbackSnapshot = JSON.stringify(initialValue);
+  const getSnapshot = useCallback(
+    () => window.localStorage.getItem(key) ?? fallbackSnapshot,
+    [fallbackSnapshot, key]
+  );
+  const getServerSnapshot = useCallback(
+    () => fallbackSnapshot,
+    [fallbackSnapshot]
+  );
+  const snapshot = useSyncExternalStore(
+    subscribeToLocalStorage,
+    getSnapshot,
+    getServerSnapshot
+  );
+  const value = useMemo(() => JSON.parse(snapshot) as T, [snapshot]);
+
+  const setValue = useCallback<Dispatch<SetStateAction<T>>>(
+    (nextValue) => {
+      const currentValue = JSON.parse(getSnapshot()) as T;
+      const resolvedValue =
+        typeof nextValue === "function"
+          ? (nextValue as (previousValue: T) => T)(currentValue)
+          : nextValue;
+
+      if (resolvedValue === null) {
+        window.localStorage.removeItem(key);
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(resolvedValue));
+      }
+
+      window.dispatchEvent(new Event(LOCAL_STORAGE_CHANGE_EVENT));
+    },
+    [getSnapshot, key]
+  );
+
+  return [value, setValue];
 }
 
 export default function HomeClient({
@@ -20,27 +81,9 @@ export default function HomeClient({
   categories,
   offers,
 }: HomeClientProps): ReactElement {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useLocalStorageState<CartItem[]>("siyana-cart", []);
   const [showLoginModal, setShowLoginModal] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-
-  // Load cart and user from localStorage on component mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem("siyana-cart");
-    const savedUser = localStorage.getItem("siyana-user");
-
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
-
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("siyana-cart", JSON.stringify(cart));
-  }, [cart]);
+  const [user, setUser] = useLocalStorageState<User | null>("siyana-user", null);
 
   const addToCart = (product: Product): void => {
     if (!user) {
@@ -78,14 +121,11 @@ export default function HomeClient({
   const login = (userData: User): void => {
     setUser(userData);
     setShowLoginModal(false);
-    localStorage.setItem("siyana-user", JSON.stringify(userData));
   };
 
   const logout = (): void => {
     setUser(null);
     setCart([]);
-    localStorage.removeItem("siyana-user");
-    localStorage.removeItem("siyana-cart");
   };
 
   const cartItemsCount: number = cart.reduce(

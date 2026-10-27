@@ -832,10 +832,23 @@ const BRANCHES: Branch[] = [
   },
 ];
 
+const getProductImageUrl = (image: unknown): string => {
+  if (typeof image === "string" && image) return image;
+  if (
+    image &&
+    typeof image === "object" &&
+    "url" in image &&
+    typeof image.url === "string"
+  ) {
+    return image.url;
+  }
+  return "/images/placeholder.jpg";
+};
+
 export default function CartPage(): ReactElement {
-  const [cart, setCart] = useState<any[]>([]);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<typeof auth.currentUser>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [orderId, setOrderId] = useState<string>("");
   const [removingItem, setRemovingItem] = useState<string | number | null>(
@@ -956,6 +969,11 @@ Please confirm my order. Thank you! 😊`;
   };
 
   const handleBranchSelect = async (branch: Branch): Promise<void> => {
+    if (!user) {
+      alert("Please log in to checkout");
+      return;
+    }
+
     setShowBranchSelection(false);
     setIsCheckingOut(true);
 
@@ -1006,9 +1024,13 @@ Please confirm my order. Thank you! 😊`;
 
       // Success modal removed - just clear cart and show branch selection is closed
       localStorage.removeItem("siyana-cart-count");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Checkout error:", error);
-      alert(error.message || "Failed to process checkout. Please try again.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Failed to process checkout. Please try again."
+      );
     } finally {
       setIsCheckingOut(false);
     }
@@ -1113,12 +1135,7 @@ Please confirm my order. Thank you! 😊`;
                         <div className="relative">
                           <div className="w-24 h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
                             <Image
-                              src={
-                                typeof item?.images?.[0] === "string"
-                                  ? item.images[0]
-                                  : item?.images?.[0]?.url ||
-                                    "/images/placeholder.jpg"
-                              }
+                              src={getProductImageUrl(item.images?.[0])}
                               alt={item.name}
                               width={96}
                               height={96}
@@ -1165,7 +1182,10 @@ Please confirm my order. Thank you! 😊`;
                               <div className="flex items-center border border-gray-300 rounded-lg">
                                 <button
                                   onClick={() =>
-                                    changeQuantity(item.id, item.quantity - 1)
+                                    changeQuantity(
+                                      String(item.id),
+                                      item.quantity - 1
+                                    )
                                   }
                                   className="p-2 text-gray-600 hover:bg-gray-50 transition-colors rounded-l-lg"
                                   disabled={item.quantity <= 1}
@@ -1177,7 +1197,10 @@ Please confirm my order. Thank you! 😊`;
                                 </span>
                                 <button
                                   onClick={() =>
-                                    changeQuantity(item.id, item.quantity + 1)
+                                    changeQuantity(
+                                      String(item.id),
+                                      item.quantity + 1
+                                    )
                                   }
                                   className="p-2 text-gray-600 hover:bg-gray-50 transition-colors rounded-r-lg"
                                 >
@@ -1196,7 +1219,7 @@ Please confirm my order. Thank you! 😊`;
                                 <Heart className="w-4 h-4" />
                               </button>
                               <button
-                                onClick={() => handleRemove(item.id)}
+                                onClick={() => handleRemove(String(item.id))}
                                 className="p-2 text-gray-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-50"
                                 title="Remove from Cart"
                               >
@@ -1423,7 +1446,7 @@ function BranchSelectionModal({
           {/* Info Message */}
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600 text-center">
-              Your order will be sent to the selected branch's WhatsApp number
+              Your order will be sent to the selected branch&apos;s WhatsApp number
             </p>
           </div>
         </div>

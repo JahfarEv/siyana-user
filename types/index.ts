@@ -366,7 +366,7 @@ export interface OfferCardProps {
   route:string,
 }
 
-export interface HeroBannerProps { }
+export type HeroBannerProps = Record<string, never>;
 
 export interface FeaturedProductsProps {
   onAddToCart: (product: Product) => void;
@@ -437,8 +437,8 @@ export interface Category {
   slug: string;
   image: string;         // if stored as image URL
   productCount: number;
-  createdAt?: any;
-  updatedAt?: any;
+  createdAt?: Timestamp | Date | string;
+  updatedAt?: Timestamp | Date | string;
 }
 
 // Order types for WhatsApp checkout
@@ -450,8 +450,8 @@ export interface Order {
   items: CartItem[];
   totalAmount: number;
   status: 'whatsapp_sent';
-  createdAt: any; // Firestore Timestamp
-  updatedAt?: any;
+  createdAt: Timestamp | Date | string;
+  updatedAt?: Timestamp | Date | string;
 }
 
 export interface CheckoutRequest {
@@ -464,3 +464,4 @@ export interface CheckoutResponse {
   whatsappUrl: string;
   message: string;
 }
+import type { Timestamp } from "firebase/firestore";

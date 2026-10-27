@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-   images: {
-    domains: ["img.siyanagoldanddiamonds.in"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "img.siyanagoldanddiamonds.in",
+      },
+    ],
   },
 };
 

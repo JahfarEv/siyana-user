@@ -866,15 +866,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
       return "/images/placeholder.jpg";
     }
 
-    const firstImage = product.images[0];
+    const firstImage: unknown = product.images[0];
 
     if (typeof firstImage === "string") {
       return firstImage || "/images/placeholder.jpg";
     }
 
-    const imageObject = firstImage as any;
-    if (imageObject && typeof imageObject === "object" && imageObject.url) {
-      return imageObject.url || "/images/placeholder.jpg";
+    if (
+      firstImage &&
+      typeof firstImage === "object" &&
+      "url" in firstImage &&
+      typeof firstImage.url === "string"
+    ) {
+      return firstImage.url || "/images/placeholder.jpg";
     }
 
     return "/images/placeholder.jpg";
@@ -962,7 +966,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
       try {
         const cartItems = await getUserCart(user.uid);
-        const exists = cartItems.some((item: any) => item.id === product.id);
+        const exists = cartItems.some((item) => item.id === product.id);
         setIsInCart(exists);
       } catch (error) {
         console.error("Error checking cart:", error);

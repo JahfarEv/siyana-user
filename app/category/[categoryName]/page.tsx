@@ -1,4 +1,3 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import CategoryProducts from "@/components/product/CategoryProducts";
 import NavbarWrapper from "@/components/layout/NavbarWrapper";
@@ -10,67 +9,33 @@ interface CategoryPageProps {
   params: Promise<{
     categoryName: string;
   }>;
-  searchParams: {
+  searchParams: Promise<{
     sort?: string;
     page?: string;
-  };
+  }>;
 }
-
-// export async function generateStaticParams() {
-//   return CATEGORIES.map((category) => ({
-//     categoryName: category.slug,
-//   }));
-// }
-
-// export async function generateMetadata({
-//   params,
-// }: CategoryPageProps): Promise<Metadata> {
-//   const { categoryName } = await params;
-
-//   const category = CATEGORIES.find((cat) => cat.slug === categoryName);
-
-//   if (!category) {
-//     return {
-//       title: "Category Not Found - Siyana Gold & Diamonds",
-//     };
-//   }
-
-//   return {
-//     title: `${category.name} Collection - Siyana Gold & Diamonds`,
-//     description: category.description,
-//     keywords: [
-//       `${category.name}`,
-//       "gold jewelry",
-//       "diamonds",
-//       "premium jewelry",
-//     ],
-//     openGraph: {
-//       title: `${category.name} Collection - Siyana Gold & Diamonds`,
-//       description: category.description,
-//       type: "website",
-//     },
-//   };
-// }
 
 export default async function CategoryPage({
   params,
   searchParams,
 }: CategoryPageProps): Promise<ReactElement> {
-  const { categoryName } = await params;
- 
-  const decodedName = decodeURIComponent(categoryName);
-
+  const [{ categoryName }, resolvedSearchParams] = await Promise.all([
+    params,
+    searchParams,
+  ]);
   const categories = await fetchCategories();
-
   const category = categories.find(
-    (cat) => cat.name.toLowerCase() === decodedName.toLowerCase()
+    (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
   );
 
   if (!category) notFound();
-   const products = await fetchProductsByCategory(category.id);
+  const products = await fetchProductsByCategory(category.id);
 
-  const sort = searchParams?.sort || "name";
-  const page = parseInt(searchParams?.page || "1");
+  const sort = resolvedSearchParams.sort || "name";
+  const requestedPage = Number.parseInt(resolvedSearchParams.page || "1", 10);
+  const page = Number.isFinite(requestedPage) && requestedPage > 0
+    ? requestedPage
+    : 1;
 
   return (
     <div className="min-h-screen bg-gray-50 mx-auto">
@@ -99,6 +64,7 @@ export default async function CategoryPage({
 
         {/* Products Grid */}
         <CategoryProducts
+          key={category.id}
           products={products}
           category={category}
           sort={sort}

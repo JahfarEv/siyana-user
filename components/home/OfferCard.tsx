@@ -38,7 +38,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ productName, discountPercentage, 
 };
 
 interface OfferCardsProps {
-  offers: any[]; // Using any[] for now as per original code context, but ideally should be typed
+  offers: OfferCardProps[];
 }
 
 const OfferCards: React.FC<OfferCardsProps> = ({ offers }): ReactElement => {

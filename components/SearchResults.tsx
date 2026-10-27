@@ -147,6 +147,19 @@ interface SearchResultsProps {
   onClose: () => void;
 }
 
+const getCategoryImageSrc = (image: unknown): string => {
+  if (typeof image === "string") return image;
+  if (
+    image &&
+    typeof image === "object" &&
+    "src" in image &&
+    typeof image.src === "string"
+  ) {
+    return image.src;
+  }
+  return "/images/placeholder.jpg";
+};
+
 const SearchResults: React.FC<SearchResultsProps> = ({
   query,
   categories,
@@ -215,7 +228,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
           <div className="flex items-center gap-2">
             <Search size={20} className="text-gray-500" />
             <span className="font-medium">
-              {filteredCategories.length} categories found for "{query}"
+              {filteredCategories.length} categories found for &quot;{query}&quot;
             </span>
           </div>
           <button
@@ -239,7 +252,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 >
                   <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
                     <Image
-                      src={typeof category.image === 'string' ? category.image : (category.image as any)?.src || '/images/placeholder.jpg'}
+                      src={getCategoryImageSrc(category.image)}
                       alt={category.name}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
@@ -266,10 +279,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 No categories found
               </h3>
               <p className="text-gray-500 mb-4">
-                No results found for "{query}"
+                No results found for &quot;{query}&quot;
               </p>
               <p className="text-sm text-gray-400">
-                Try searching for "Earrings", "Rings", or "Bangles"
+                Try searching for &quot;Earrings&quot;, &quot;Rings&quot;, or &quot;Bangles&quot;
               </p>
             </div>
           )}
