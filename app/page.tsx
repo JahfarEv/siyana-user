@@ -28,8 +28,7 @@
 
 
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 300;
 
 import { ReactElement } from "react";
 import HomeClient from "@/components/home/HomeClient";
@@ -62,19 +61,18 @@ function serializeData<T>(data: T): T {
 }
 
 function isOfferCardProps(value: unknown): value is OfferRecord {
+  if (typeof value !== "object" || value === null) return false;
+
+  const offer = value as Record<string, unknown>;
+
   return (
-    typeof value === "object" &&
-    value !== null &&
-    "id" in value &&
-    typeof value.id === "string" &&
-    "productName" in value &&
-    typeof value.productName === "string" &&
-    "discountPercentage" in value &&
-    typeof value.discountPercentage === "string" &&
-    "image" in value &&
-    typeof value.image === "string" &&
-    "route" in value &&
-    typeof value.route === "string"
+    typeof offer.id === "string" &&
+    typeof offer.productName === "string" &&
+    (typeof offer.discountPercentage === "string" ||
+      (typeof offer.discountPercentage === "number" &&
+        Number.isFinite(offer.discountPercentage))) &&
+    typeof offer.image === "string" &&
+    typeof offer.route === "string"
   );
 }
 

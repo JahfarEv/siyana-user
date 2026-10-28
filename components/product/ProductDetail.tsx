@@ -653,14 +653,14 @@ if (!user) {
 
   return (
     <div className="min-h-screen bg-gray-50/50">
-      <div className="px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-4 sm:p-6 lg:p-8">
+      <div className="px-0 py-0 sm:px-4 sm:py-8">
+        <div className="overflow-hidden bg-white shadow-sm sm:rounded-2xl sm:border sm:border-gray-100">
+          <div className="grid grid-cols-1 gap-8 p-0 lg:grid-cols-2 lg:gap-12 sm:p-6 lg:p-8">
             {/* Product Images Section */}
             <div className="space-y-6">
               {/* Main Product Image */}
-              <div className="bg-white rounded-2xl p-4 sm:p-6 ">
-                <div className="relative aspect-square max-w-2xl mx-auto">
+              <div className="bg-white p-0 sm:rounded-2xl sm:p-6">
+                <div className="relative aspect-square w-full">
                   <Image
                     src={
                       imageError
@@ -669,7 +669,7 @@ if (!user) {
                     }
                     alt={product.name}
                     fill
-                    className={`rounded-xl object-contain transition-all duration-500 ${
+                    className={`object-contain transition-all duration-500 sm:rounded-xl ${
                       imageLoaded
                         ? "opacity-100 scale-100"
                         : "opacity-0 scale-95"
@@ -679,10 +679,12 @@ if (!user) {
                       setImageError(true);
                       setImageLoaded(true);
                     }}
+                    quality={75}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                   />
                   {!imageLoaded && (
-                    <div className="absolute inset-0 bg-gray-100 rounded-xl flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 sm:rounded-xl">
                       <Loader2
                         className="w-10 h-10 text-[#196b7a] animate-spin"
                         aria-label="Loading product image"
@@ -725,7 +727,7 @@ if (!user) {
 
               {/* Image Thumbnails - Only show if multiple images */}
               {product.images && product.images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto py-2">
+                <div className="flex gap-2 overflow-x-auto px-4 py-2 sm:px-0">
                   {product.images.map((image, index) => (
                     <button
                       key={index}
@@ -740,7 +742,10 @@ if (!user) {
                         src={getImageUrl(image)}
                         alt={`${product.name} - View ${index + 1}`}
                         fill
+                        quality={60}
                         className="object-cover"
+                        sizes="(max-width: 640px) 64px, 80px"
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -752,7 +757,7 @@ if (!user) {
             </div>
 
             {/* Product Details Section */}
-            <div className="space-y-6">
+            <div className="space-y-6 p-4 sm:p-0">
               {/* Header Section */}
               <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">

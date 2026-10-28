@@ -360,10 +360,10 @@ export interface CategoryCardProps {
 
 export interface OfferCardProps {
   productName: string;
-  discountPercentage: string;
+  discountPercentage: string | number;
   className?: string;
   image: string;
-  route:string,
+  route: string;
 }
 
 export type HeroBannerProps = Record<string, never>;

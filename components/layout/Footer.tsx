@@ -182,6 +182,8 @@
 
 // export default Footer;
 
+
+
 "use client";
 import React from "react";
 import {
@@ -195,7 +197,7 @@ import {
 } from "lucide-react";
 import { useGoldRate } from "@/hooks/useCarousel";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+// import "react-loading-skeleton/dist/skeleton.css";
 import Link from "next/link";
 
 const Footer: React.FC = () => {
@@ -251,69 +253,79 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#278899] text-white p-4 md:p-8 rounded-3xl m-2 md:m-4">
-      {/* Gold Rate Banner - More compact on mobile */}
-      <div className="bg-gradient-to-r from-amber-600 to-yellow-500 rounded-2xl md:rounded-xl p-3 md:p-2 mb-6 md:mb-8 shadow-xl">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-2">
-          <div className="flex items-center self-start md:self-auto">
-            <TrendingUp className="text-white mr-2" size={20} />
-            <h3 className="text-lg md:text-xl font-bold text-white">
-              Today&apos;s Gold Rate
-            </h3>
-          </div>
+      {/* Today's Gold Rate */}
+    {/* Today's Gold Rate */}
+<div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-white to-amber-50 shadow-md ring-1 ring-amber-200/60 md:mb-8">
+  {/* Header bar */}
+  <div className="flex items-center justify-between gap-2 border-b border-amber-200/60 bg-gradient-to-r from-amber-100/70 to-amber-50/70 px-4 py-2.5">
+    <div className="flex items-center gap-2">
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500/15">
+        <TrendingUp className="text-amber-700" size={16} strokeWidth={2.5} />
+      </span>
+      <h3 className="text-sm font-bold tracking-wide text-amber-950 md:text-base">
+        Today&apos;s Gold Rate
+      </h3>
+    </div>
+    <span className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold text-emerald-700 md:text-xs">
+      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+      LIVE
+    </span>
+  </div>
 
-          {/* Horizontal scroll on mobile if needed */}
-          <div className="w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-            <div className="flex flex-row md:flex-wrap justify-between md:justify-center gap-4 md:gap-6 min-w-max md:min-w-0">
-              {isLoading ? (
-                goldTypes.map((item) => (
-                  <div key={item.key} className="text-center">
-                    <Skeleton width={50} height={18} />
-                    <Skeleton width={40} height={14} />
-                  </div>
-                ))
-              ) : goldRates && !isError ? (
-                goldTypes.map((item) => (
-                  <div
-                    key={item.key}
-                    className="text-center md:min-w-[150px] px-2 
-               bg-white 
-               rounded-xl 
-               shadow-md 
-               border border-yellow-300 
-               hover:shadow-lg 
-               hover:-translate-y-1 
-               transition-all duration-300"
-                  >
-                    {/* Label */}
-                    <div className="text-sm md:text-base font-semibold text-yellow-700 py-2 border-b border-yellow-200">
-                      {item.label}
-                    </div>
-
-                    {/* Price */}
-                    <div className="text-lg md:text-xl font-bold text-gray-900 py-3">
-                      ₹{getGoldRateValue(item.key)}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="text-white text-sm">No gold rate available</p>
-              )}
-            </div>
+  {/* Rates */}
+  <div className="px-4 py-4 md:px-5 md:py-5">
+    {isLoading ? (
+      <div className="grid grid-cols-3 gap-2.5 md:gap-4">
+        {goldTypes.map((item) => (
+          <div
+            key={item.key}
+            className="rounded-xl border border-amber-100 bg-white p-3 text-center"
+          >
+            <Skeleton width={40} height={12} className="mx-auto" />
+            <Skeleton width={60} height={20} className="mx-auto mt-2" />
           </div>
-
-          <div className="self-end md:self-auto text-xs md:text-sm text-white font-medium bg-[#278899] px-2 md:px-3 py-1 rounded-xl whitespace-nowrap">
-            Updated:{" "}
-            {createdDate
-              ? createdDate.toLocaleString("en-IN", {
-                  day: "2-digit",
-                  month: "short",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "Unknown"}
-          </div>
-        </div>
+        ))}
       </div>
+    ) : goldRates && !isError ? (
+      <div className="grid grid-cols-3 gap-2.5 md:gap-4">
+        {goldTypes.map((item) => (
+          <div
+            key={item.key}
+            className="group relative overflow-hidden rounded-xl border border-amber-200/70 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md md:p-4"
+          >
+            {/* subtle gold gradient top accent */}
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-700/80 md:text-xs">
+              {item.label}
+            </p>
+            <p className="mt-1.5 text-base font-bold text-amber-950 md:mt-2 md:text-xl">
+              <span className="text-sm text-amber-600 md:text-base">₹</span>
+              {getGoldRateValue(item.key)}
+            </p>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="flex items-center justify-center rounded-xl border border-amber-100 bg-white py-6">
+        <p className="text-sm text-amber-900/70">No gold rate available</p>
+      </div>
+    )}
+
+    {/* Updated timestamp */}
+    <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-amber-900/60 md:mt-4 md:text-xs">
+      <span className="h-1 w-1 rounded-full bg-amber-400" />
+      Updated:{" "}
+      {createdDate
+        ? createdDate.toLocaleString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "Unknown"}
+    </div>
+  </div>
+</div>
 
       {/* Footer Links - Condensed on mobile */}
       <div className="grid grid-cols-3 gap-4 md:gap-8 ">
