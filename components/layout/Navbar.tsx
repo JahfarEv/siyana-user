@@ -731,6 +731,7 @@ const Navbar: React.FC<NavbarProps> = ({
               alt="Siyana Gold & Diamonds"
               width={320}
               height={128}
+              sizes="220px"
               className="h-48 w-auto sm:h-64 md:h-78 object-contain mt-2 md:mt-5"
               onError={handleImageError}
               priority

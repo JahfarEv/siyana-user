@@ -1,9 +1,16 @@
 export default function CategoryLoading() {
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8">
+    <main
+      className="min-h-screen bg-gray-50 px-4 py-8 sm:px-6 lg:px-8"
+      aria-busy="true"
+      aria-live="polite"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 py-12 text-center">
           <div className="mx-auto mb-6 h-1 w-16 animate-pulse rounded-full bg-amber-300" />
+          <p role="status" className="text-lg font-medium text-gray-700">
+            Loading category products…
+          </p>
           <div className="mx-auto h-12 w-2/3 max-w-md animate-pulse rounded bg-gray-200" />
           <div className="mx-auto mt-5 h-5 w-40 animate-pulse rounded bg-gray-200" />
         </div>

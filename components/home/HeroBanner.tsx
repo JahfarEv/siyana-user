@@ -53,6 +53,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({ slides }) => {
           src={slide.url}
           alt={slide.title || "Slide"}
           fill
+          quality={60}
           className="object-cover"
           priority={index === 0}
           sizes="100vw"

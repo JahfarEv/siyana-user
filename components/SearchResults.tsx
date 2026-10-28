@@ -255,6 +255,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                       src={getCategoryImageSrc(category.image)}
                       alt={category.name}
                       fill
+                      quality={60}
                       className="object-cover group-hover:scale-110 transition-transform duration-300"
                       sizes="48px"
                     />

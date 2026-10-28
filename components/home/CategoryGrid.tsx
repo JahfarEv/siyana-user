@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import { Category } from "@/types";
 
 interface CategoryGridProps {
@@ -9,6 +9,22 @@ interface CategoryGridProps {
 }
 
 const INITIAL_COUNT = 12;
+
+function CategoryLinkStatus() {
+  const { pending } = useLinkStatus();
+
+  if (!pending) return null;
+
+  return (
+    <div
+      role="status"
+      aria-label="Loading category"
+      className="absolute inset-0 z-10 flex items-center justify-center bg-black/45"
+    >
+      <span className="h-10 w-10 animate-spin rounded-full border-4 border-white/40 border-t-amber-400" />
+    </div>
+  );
+}
 
 const CategoryGrid: React.FC<CategoryGridProps> = ({ categories }) => {
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
@@ -23,9 +39,17 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ categories }) => {
         {categories?.slice(0, visibleCount).map((category) => (
           <Link
             key={category.id}
-            href={`/category/${encodeURIComponent(category.name)}`}
+            href={`/category/${encodeURIComponent(
+              category.slug ||
+                category.name
+                  .trim()
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/^-|-$/g, "")
+            )}`}
             className="relative block h-60 overflow-hidden group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-out hover:scale-105"
           >
+            <CategoryLinkStatus />
             <Image
               src={category.image}
               alt={category.name}

@@ -1011,10 +1011,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
               src={imageError ? "/images/placeholder.jpg" : imageUrl}
               alt={product.name}
               fill
+              quality={60}
               className={`object-cover rounded-lg ${
                 imageLoaded ? "opacity-100" : "opacity-0"
               }`}
               sizes="(max-width: 640px) 80px, 96px"
+              loading="lazy"
               onError={handleImageError}
               onLoad={handleImageLoad}
             />
@@ -1136,10 +1138,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
           src={imageError ? "/images/placeholder.jpg" : imageUrl}
           alt={product.name}
           fill
+          quality={60}
           className={`object-cover hover:scale-105 transition-transform duration-300 ${
             imageLoaded ? "opacity-100" : "opacity-0"
           }`}
           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+          loading="lazy"
           onError={handleImageError}
           onLoad={handleImageLoad}
         />
