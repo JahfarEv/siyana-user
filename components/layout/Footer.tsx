@@ -184,229 +184,668 @@
 
 
 
+
+// "use client";
+// import React from "react";
+// import {
+//   Mail,
+//   Phone,
+//   MessageCircle,
+//   Instagram,
+//   Facebook,
+// } from "lucide-react";
+// // import "react-loading-skeleton/dist/skeleton.css";
+// import Link from "next/link";
+
+// const Footer: React.FC = () => {
+//   const customerService: { name: string; href?: string }[] = [
+//     { name: "Contact us", href: "/contact" },
+//     { name: "Help" },
+//   ];
+//   const myAccount: string[] = [
+//     "My Account",
+//     "Wishlist",
+//     "Special",
+//     "Order History",
+//   ];
+//   const socialMediaLinks = [
+//     {
+//       name: "WhatsApp",
+//       icon: MessageCircle,
+//       url: "https://wa.me/918938916916",
+//       color: "hover:text-green-400",
+//     },
+//     {
+//       name: "Instagram",
+//       icon: Instagram,
+//       url: "https://instagram.com/SiyanaGoldandDiamonds",
+//       color: "hover:text-pink-400",
+//     },
+//     {
+//       name: "Facebook",
+//       icon: Facebook,
+//       url: "https://facebook.com/SiyanaGoldandDiamonds",
+//       color: "hover:text-blue-400",
+//     },
+//   ];
+//   return (
+//     <footer className="bg-[#278899] text-white p-4 md:p-8 rounded-3xl m-2 md:m-4">
+//       {/* Footer Links - Condensed on mobile */}
+//       <div className="grid grid-cols-3 gap-4 md:gap-8 ">
+//         {/* Customer Service */}
+//         <div>
+//           <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+//             Service
+//           </h4>
+//           <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
+//             {customerService.map((item) => (
+//               <li
+//                 key={item.name}
+//                 className="hover:text-yellow-300 transition-colors"
+//               >
+//                 {item.href ? (
+//                   <Link href={item.href}>{item.name}</Link>
+//                 ) : (
+//                   <span className="cursor-pointer">{item.name}</span>
+//                 )}
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+
+//         {/* Social Media - Make it horizontal on mobile */}
+//         <div className="col-span-1">
+//           <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+//             Follow us
+//           </h4>
+//           <ul className="flex flex-col gap-3 md:gap-2 text-xs md:text-sm">
+//             {socialMediaLinks.map((social) => (
+//               <li key={social.name}>
+//                 <Link
+//                   href={social.url}
+//                   target="_blank"
+//                   rel="noopener noreferrer"
+//                   className={`flex items-center ${social.color} transition-colors`}
+//                 >
+//                   <social.icon size={16} className="mr-1 md:mr-2" />
+//                   <span className="hidden md:inline">{social.name}</span>
+//                   {/* Show only icons on mobile to save space */}
+//                   <span className="md:hidden">{social.name}</span>
+//                 </Link>
+//               </li>
+//             ))}
+//           </ul>
+//         </div>
+
+//    {/* Contact Info - All Branches */}
+// <div className="col-span-1">
+//   <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
+//     Contact
+//   </h4>
+//   <ul className="space-y-2 md:space-y-3 text-xs md:text-sm">
+//     {/* Vengara */}
+//     <li>
+//       <p className="text-[10px] uppercase tracking-wider text-teal-200/80 mb-0.5">
+//         Vengara
+//       </p>
+//       <a
+//         href="tel:+918938916916"
+//         className="flex items-center transition-colors hover:text-yellow-300"
+//       >
+//         <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
+//         <span className="truncate">+91 89389 16916</span>
+//       </a>
+//     </li>
+
+//     {/* Othukkungal */}
+//     <li>
+//       <p className="text-[10px] uppercase tracking-wider text-teal-200/80 mb-0.5">
+//         Othukkungal
+//       </p>
+//       <a
+//         href="tel:+917232916916"
+//         className="flex items-center transition-colors hover:text-yellow-300"
+//       >
+//         <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
+//         <span className="truncate">+91 72329 16916</span>
+//       </a>
+//     </li>
+
+//     {/* Kizhisseri */}
+//     <li>
+//       <p className="text-[10px] uppercase tracking-wider text-teal-200/80 mb-0.5">
+//         Kizhisseri
+//       </p>
+//       <a
+//         href="tel:+917699916916"
+//         className="flex items-center transition-colors hover:text-yellow-300"
+//       >
+//         <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
+//         <span className="truncate">+91 76999 16916</span>
+//       </a>
+//     </li>
+
+//     {/* Email */}
+//     <li className="pt-1">
+//       <a
+//         href="mailto:siyanagoldndiamonds@gmail.com"
+//         className="flex items-center transition-colors hover:text-yellow-300"
+//       >
+//         <Mail size={14} className="mr-1 md:mr-2 flex-shrink-0" />
+//         <span className="truncate text-xs">
+//           siyanagoldndiamonds@gmail.com
+//         </span>
+//       </a>
+//     </li>
+//   </ul>
+// </div>
+//       </div>
+
+//       {/* Copyright - More compact on mobile */}
+//       <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-teal-600 text-center text-xs md:text-sm text-teal-200">
+//         <p>
+//           &copy; {new Date().getFullYear()} Siyana Gold And Diamonds
+//           {/* <Link
+//             href="https://jahfar.online"
+//             target="_blank"
+//             rel="noopener noreferrer"
+//             className="text-yellow-300 hover:text-yellow-400 font-medium transition-colors underline ml-1"
+//           >
+//             jahfar.online
+//           </Link> */}
+//         </p>
+//       </div>
+//     </footer>
+//   );
+// };
+
+// export default Footer;
+
+
+// "use client";
+
+// import React from "react";
+// import Image from "next/image";
+// import Link from "next/link";
+// import {
+//   Mail,
+//   Phone,
+//   MapPin,
+//   MessageCircle,
+//   Instagram,
+//   Facebook,
+//   ArrowUpRight,
+// } from "lucide-react";
+
+// const Footer: React.FC = () => {
+//   const branches = [
+//     {
+//       name: "Vengara",
+//       phone: "918938916916",
+//       display: "+91 89389 16916",
+//     },
+//     {
+//       name: "Othukkungal",
+//       phone: "917232916916",
+//       display: "+91 72329 16916",
+//     },
+//     {
+//       name: "Kizhisseri",
+//       phone: "917699916916",
+//       display: "+91 76999 16916",
+//     },
+//   ];
+
+//   const socialLinks = [
+//     {
+//       name: "WhatsApp",
+//       icon: MessageCircle,
+//       url: "https://wa.me/918938916916",
+//     },
+//     {
+//       name: "Instagram",
+//       icon: Instagram,
+//       url: "https://instagram.com/SiyanaGoldandDiamonds",
+//     },
+//     {
+//       name: "Facebook",
+//       icon: Facebook,
+//       url: "https://facebook.com/SiyanaGoldandDiamonds",
+//     },
+//   ];
+
+//   const quickLinks = [
+//     { name: "Terms & Conditions", href: "/terms" },
+//     { name: "Privacy Policy", href: "/privacy" },
+//     { name: "Offers", href: "/offers" },
+//     { name: "Career", href: "/career" },
+//   ];
+
+//   return (
+//     <footer className="relative m-2 overflow-hidden rounded-3xl bg-[#0a2c35] text-white shadow-lg ring-1 ring-[#e9bf55]/20 md:m-4">
+//       {/* Gold top border */}
+//       <div className="h-[2px] bg-gradient-to-r from-transparent via-[#e9bf55] to-transparent" />
+
+//       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 md:py-14">
+//         {/* Main footer */}
+//         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+//           {/* Brand */}
+//           <div className="lg:col-span-4">
+//             <Link href="/" className="inline-flex">
+//               <div className="relative h-24 w-56 sm:h-48 sm:w-64">
+//                 <Image
+//                   src="/images/siyanaFooter.png"
+//                   alt="Siyana Gold and Diamonds"
+//                   fill
+//                   priority={false}
+//                   sizes="256px"
+//                   className="object-contain"
+//                 />
+//               </div>
+//             </Link>
+
+//             <p className="mt-3 max-w-sm text-sm leading-7 text-white/65">
+//               Discover timeless elegance and exquisite craftsmanship at Siyana
+//               Gold and Diamonds. Explore beautiful collections crafted to make
+//               every occasion special.
+//             </p>
+//           </div>
+
+//           {/* Customer service */}
+//           <div className="lg:col-span-3">
+//             <h4 className="mb-5 text-base font-semibold text-white">
+//               Customer Care
+//             </h4>
+
+//             <ul className="space-y-4 text-sm text-white/65">
+//               <li>
+//                 <Link
+//                   href="/contact"
+//                   className="transition-colors hover:text-[#f0cf7a]"
+//                 >
+//                   Contact Us
+//                 </Link>
+//               </li>
+
+//               <li>
+//                 <Link
+//                   href="/help"
+//                   className="transition-colors hover:text-[#f0cf7a]"
+//                 >
+//                   Help &amp; Support
+//                 </Link>
+//               </li>
+//             </ul>
+
+
+            
+//           </div>
+
+//           {/* Quick links */}
+//           <div className="lg:col-span-3">
+//             <h4 className="mb-5 text-base font-semibold text-white">
+//               Quick Links
+//             </h4>
+
+//             <ul className="space-y-4 text-sm text-white/65">
+//               {quickLinks.map((link) => (
+//                 <li key={link.name}>
+//                   <Link
+//                     href={link.href}
+//                     className="transition-colors hover:text-[#f0cf7a]"
+//                   >
+//                     {link.name}
+//                   </Link>
+//                 </li>
+//               ))}
+//             </ul>
+//           </div>
+
+//           {/* Branches */}
+         
+
+//           {/* Contact + Social */}
+//           <div className="lg:col-span-2">
+//             <h4 className="mb-5 text-base font-semibold text-white">
+//               Get in Touch
+//             </h4>
+
+//             <p className="mb-4 text-sm leading-6 text-white/60">
+//               Have questions? We are happy to help you.
+//             </p>
+
+//             <a
+//               href="mailto:siyanagoldndiamonds@gmail.com"
+//               className="flex items-start gap-2 break-all text-sm text-white/70 transition-colors hover:text-[#f0cf7a]"
+//             >
+//               <Mail size={16} className="mt-0.5 shrink-0 text-[#f0cf7a]" />
+//               siyanagoldndiamonds@gmail.com
+//             </a>
+
+//             <div className="mt-6">
+//               <h4 className="mb-3 text-sm font-semibold tracking-wide text-[#f0cf7a]">
+//                 FOLLOW US
+//               </h4>
+
+//               <div className="flex gap-3">
+//                 {socialLinks.map((social) => (
+//                   <a
+//                     key={social.name}
+//                     href={social.url}
+//                     target="_blank"
+//                     rel="noopener noreferrer"
+//                     aria-label={social.name}
+//                     className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e9bf55]/30 text-[#f0cf7a] transition-all duration-300 hover:border-[#e9bf55] hover:bg-[#e9bf55] hover:text-[#0a2c35]"
+//                   >
+//                     <social.icon size={18} />
+//                   </a>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Bottom footer */}
+//         <div className="mt-12 border-t border-white/10 pt-6">
+//           {/* Policy links (visible on all screens) */}
+//           <div className="mb-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/55 sm:justify-start">
+//             {quickLinks.map((link) => (
+//               <Link
+//                 key={link.name}
+//                 href={link.href}
+//                 className="transition-colors hover:text-[#f0cf7a]"
+//               >
+//                 {link.name}
+//               </Link>
+//             ))}
+//           </div>
+
+//           <div className="flex flex-col items-center justify-between gap-3 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+//             <p>
+//               © {new Date().getFullYear()} Siyana Gold and Diamonds. All rights
+//               reserved.
+//             </p>
+
+//             <p>
+//               Developed by{" "}
+//               <a
+//                 href="https://www.jahfar.online/"
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="font-semibold text-[#f0cf7a] transition-colors hover:text-white"
+//               >
+//                 Jahfar Ali
+//               </a>
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+//     </footer>
+//   );
+// };
+
+// export default Footer;
+
+
+
+
+
 "use client";
+
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import {
   Mail,
   Phone,
   MapPin,
-  TrendingUp,
   MessageCircle,
   Instagram,
   Facebook,
+  ArrowUpRight,
 } from "lucide-react";
-import { useGoldRate } from "@/hooks/useCarousel";
-import Skeleton from "react-loading-skeleton";
-// import "react-loading-skeleton/dist/skeleton.css";
-import Link from "next/link";
 
 const Footer: React.FC = () => {
-  const customerService: string[] = ["Contact us", "Help"];
-  const myAccount: string[] = [
-    "My Account",
-    "Wishlist",
-    "Special",
-    "Order History",
+  const branches = [
+    {
+      name: "Vengara",
+      phone: "918938916916",
+      display: "+91 89389 16916",
+    },
+    {
+      name: "Othukkungal",
+      phone: "917232916916",
+      display: "+91 72329 16916",
+    },
+    {
+      name: "Kizhisseri",
+      phone: "917699916916",
+      display: "+91 76999 16916",
+    },
   ];
-  const socialMediaLinks = [
+
+  const socialLinks = [
     {
       name: "WhatsApp",
       icon: MessageCircle,
       url: "https://wa.me/918938916916",
-      color: "hover:text-green-400",
     },
     {
       name: "Instagram",
       icon: Instagram,
       url: "https://instagram.com/SiyanaGoldandDiamonds",
-      color: "hover:text-pink-400",
     },
     {
       name: "Facebook",
       icon: Facebook,
       url: "https://facebook.com/SiyanaGoldandDiamonds",
-      color: "hover:text-blue-400",
     },
   ];
-  const { data: goldRates, isLoading, isError } = useGoldRate();
 
-  const goldRateData = goldRates as Record<string, unknown> | null | undefined;
-  const createdAt = goldRateData?.createdAt;
-  const createdAtSeconds =
-    createdAt &&
-    typeof createdAt === "object" &&
-    "seconds" in createdAt &&
-    typeof createdAt.seconds === "number"
-      ? createdAt.seconds
-      : null;
-  const createdDate =
-    createdAtSeconds === null ? null : new Date(createdAtSeconds * 1000);
-  const getGoldRateValue = (key: string): string | number => {
-    const value = goldRateData?.[key];
-    return typeof value === "string" || typeof value === "number" ? value : "—";
-  };
-  const goldTypes = [
-    { key: "Gold_24", label: "1 Gram" },
-    { key: "Gold_22", label: "8 Gram" },
-    { key: "Gold_18", label: "18 CT" },
+  const quickLinks = [
+    { name: "Terms & Conditions", href: "/terms" },
+    { name: "Privacy Policy", href: "/privacy" },
+    { name: "Offers", href: "/offers" },
+    { name: "Career", href: "/career" },
   ];
 
   return (
-    <footer className="bg-[#278899] text-white p-4 md:p-8 rounded-3xl m-2 md:m-4">
-      {/* Today's Gold Rate */}
-    {/* Today's Gold Rate */}
-<div className="mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 via-white to-amber-50 shadow-md ring-1 ring-amber-200/60 md:mb-8">
-  {/* Header bar */}
-  <div className="flex items-center justify-between gap-2 border-b border-amber-200/60 bg-gradient-to-r from-amber-100/70 to-amber-50/70 px-4 py-2.5">
-    <div className="flex items-center gap-2">
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-500/15">
-        <TrendingUp className="text-amber-700" size={16} strokeWidth={2.5} />
-      </span>
-      <h3 className="text-sm font-bold tracking-wide text-amber-950 md:text-base">
-        Today&apos;s Gold Rate
-      </h3>
-    </div>
-    <span className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold text-emerald-700 md:text-xs">
-      <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-      LIVE
-    </span>
-  </div>
+    <footer className="relative m-2 overflow-hidden rounded-3xl bg-[#0a2c35] text-white shadow-lg ring-1 ring-[#e9bf55]/20 md:m-4">
+      {/* Gold top border */}
+      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#e9bf55] to-transparent" />
 
-  {/* Rates */}
-  <div className="px-4 py-4 md:px-5 md:py-5">
-    {isLoading ? (
-      <div className="grid grid-cols-3 gap-2.5 md:gap-4">
-        {goldTypes.map((item) => (
-          <div
-            key={item.key}
-            className="rounded-xl border border-amber-100 bg-white p-3 text-center"
-          >
-            <Skeleton width={40} height={12} className="mx-auto" />
-            <Skeleton width={60} height={20} className="mx-auto mt-2" />
-          </div>
-        ))}
-      </div>
-    ) : goldRates && !isError ? (
-      <div className="grid grid-cols-3 gap-2.5 md:gap-4">
-        {goldTypes.map((item) => (
-          <div
-            key={item.key}
-            className="group relative overflow-hidden rounded-xl border border-amber-200/70 bg-white p-3 text-center shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-md md:p-4"
-          >
-            {/* subtle gold gradient top accent */}
-            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-700/80 md:text-xs">
-              {item.label}
-            </p>
-            <p className="mt-1.5 text-base font-bold text-amber-950 md:mt-2 md:text-xl">
-              <span className="text-sm text-amber-600 md:text-base">₹</span>
-              {getGoldRateValue(item.key)}
+      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 md:py-14">
+        {/* Main footer */}
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 mb-6">
+          {/* Brand */}
+          <div className="lg:col-span-4">
+            <Link href="/" className="inline-flex">
+              <div className="relative h-24 w-56 sm:h-48 sm:w-64">
+                <Image
+                  src="/images/siyanaFooter.png"
+                  alt="Siyana Gold and Diamonds"
+                  fill
+                  priority={false}
+                  sizes="256px"
+                  className="object-contain"
+                />
+              </div>
+            </Link>
+
+            <p className="mt-3 max-w-sm text-sm leading-7 text-white/65">
+              Discover timeless elegance and exquisite craftsmanship at Siyana
+              Gold and Diamonds. Explore beautiful collections crafted to make
+              every occasion special.
             </p>
           </div>
-        ))}
-      </div>
-    ) : (
-      <div className="flex items-center justify-center rounded-xl border border-amber-100 bg-white py-6">
-        <p className="text-sm text-amber-900/70">No gold rate available</p>
-      </div>
-    )}
 
-    {/* Updated timestamp */}
-    <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-amber-900/60 md:mt-4 md:text-xs">
-      <span className="h-1 w-1 rounded-full bg-amber-400" />
-      Updated:{" "}
-      {createdDate
-        ? createdDate.toLocaleString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            hour: "2-digit",
-            minute: "2-digit",
-          })
-        : "Unknown"}
-    </div>
-  </div>
-</div>
+          {/* Customer service */}
+          <div className="lg:col-span-3">
+            <h4 className="mb-5 text-base font-semibold text-white">
+              Customer Care
+            </h4>
 
-      {/* Footer Links - Condensed on mobile */}
-      <div className="grid grid-cols-3 gap-4 md:gap-8 ">
-        {/* Customer Service */}
-        <div>
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
-            Service
-          </h4>
-          <ul className="space-y-1 md:space-y-2 text-xs md:text-sm">
-            {customerService.map((item) => (
-              <li
-                key={item}
-                className="hover:text-yellow-300 cursor-pointer transition-colors"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Social Media - Make it horizontal on mobile */}
-        <div className="col-span-1">
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
-            Follow us
-          </h4>
-          <ul className="flex flex-col gap-3 md:gap-2 text-xs md:text-sm">
-            {socialMediaLinks.map((social) => (
-              <li key={social.name}>
+            <ul className="space-y-4 text-sm text-white/65">
+              <li>
                 <Link
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center ${social.color} transition-colors`}
+                  href="/contact"
+                  className="transition-colors hover:text-[#f0cf7a]"
                 >
-                  <social.icon size={16} className="mr-1 md:mr-2" />
-                  <span className="hidden md:inline">{social.name}</span>
-                  {/* Show only icons on mobile to save space */}
-                  <span className="md:hidden">{social.name}</span>
+                  Contact Us
                 </Link>
               </li>
+
+              <li>
+                <Link
+                  href="/help"
+                  className="transition-colors hover:text-[#f0cf7a]"
+                >
+                  Help &amp; Support
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick links */}
+          <div className="lg:col-span-3">
+            <h4 className="mb-5 text-base font-semibold text-white">
+              Quick Links
+            </h4>
+
+            <ul className="space-y-4 text-sm text-white/65">
+              {quickLinks.map((link) => (
+                <li key={link.name}>
+                  <Link
+                    href={link.href}
+                    className="transition-colors hover:text-[#f0cf7a]"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact + Social */}
+          <div className="lg:col-span-2">
+            <h4 className="mb-5 text-base font-semibold text-white">
+              Get in Touch
+            </h4>
+
+            <p className="mb-4 text-sm leading-6 text-white/60">
+              Have questions? We are happy to help you.
+            </p>
+
+            <a
+              href="mailto:siyanagoldndiamonds@gmail.com"
+              className="flex items-start gap-2 break-all text-sm text-white/70 transition-colors hover:text-[#f0cf7a]"
+            >
+              <Mail size={16} className="mt-0.5 shrink-0 text-[#f0cf7a]" />
+              siyanagoldndiamonds@gmail.com
+            </a>
+
+            <div className="mt-6">
+              <h4 className="mb-3 text-sm font-semibold tracking-wide text-[#f0cf7a]">
+                FOLLOW US
+              </h4>
+
+              <div className="flex gap-3">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.name}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e9bf55]/30 text-[#f0cf7a] transition-all duration-300 hover:border-[#e9bf55] hover:bg-[#e9bf55] hover:text-[#0a2c35]"
+                  >
+                    <social.icon size={18} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+        </div>
+   <div >
+            <h4 className="mb-3 text-center text-sm font-semibold tracking-wide text-[#f0cf7a] sm:text-left">
+              OUR BRANCHES
+            </h4>
+
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              {branches.map((branch) => (
+                <div
+                  key={branch.name}
+                  className="flex flex-1 items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-[#e9bf55]/40"
+                >
+                  <div className="flex items-center gap-2">
+                    <MapPin size={15} className="shrink-0 text-[#f0cf7a]" />
+                    <span className="text-sm font-semibold text-white">
+                      {branch.name}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <a
+                      href={`tel:+${branch.phone}`}
+                      className="flex items-center gap-1.5 text-xs text-white/70 transition-colors hover:text-[#f0cf7a]"
+                    >
+                      <Phone size={13} />
+                      {branch.display}
+                    </a>
+
+                    <a
+                      href={`https://wa.me/${branch.phone}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`WhatsApp ${branch.name}`}
+                      className="flex items-center gap-1 text-xs font-medium text-[#f0cf7a] hover:text-white"
+                    >
+                      WhatsApp
+                      <ArrowUpRight size={12} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        {/* Bottom footer */}
+        <div className="mt-6 border-t border-white/10 pt-6">
+          {/* Branches (inline format) */}
+       
+
+          {/* Policy links (visible on all screens) */}
+          {/* <div className="mb-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/55 sm:justify-start">
+            {quickLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="transition-colors hover:text-[#f0cf7a]"
+              >
+                {link.name}
+              </Link>
             ))}
-          </ul>
-        </div>
+          </div> */}
 
-        {/* Contact Info - Condensed */}
-        <div className="col-span-1">
-          <h4 className="text-base md:text-lg font-bold mb-2 md:mb-4">
-            Contact
-          </h4>
-          <ul className="space-y-1 md:space-y-3 text-xs md:text-sm">
-            <li className="flex items-center">
-              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
-              <span className="truncate">+91 8938916916</span>
-            </li>
-            <li className="flex items-center">
-              <Phone size={14} className="mr-1 md:mr-2 flex-shrink-0" />
-              <span className="truncate">+91 8938916916</span>
-            </li>
-            <li className="flex items-center">
-              <Mail size={14} className="mr-1 md:mr-2 flex-shrink-0" />
-              <span className="truncate text-xs">
-                siyanagoldndiamonds@gmail.com
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+          <div className="flex flex-col items-center justify-between gap-3 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+            <p>
+              © {new Date().getFullYear()} Siyana Gold and Diamonds. All rights
+              reserved.
+            </p>
 
-      {/* Copyright - More compact on mobile */}
-      <div className="mt-6 md:mt-8 pt-4 md:pt-6 border-t border-teal-600 text-center text-xs md:text-sm text-teal-200">
-        <p>
-          &copy; {new Date().getFullYear()} Siyana Gold And Diamonds
-          {/* <Link
-            href="https://jahfar.online"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-yellow-300 hover:text-yellow-400 font-medium transition-colors underline ml-1"
-          >
-            jahfar.online
-          </Link> */}
-        </p>
+            <p>
+              Developed by{" "}
+              <a
+                href="https://www.jahfar.online/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#f0cf7a] transition-colors hover:text-white"
+              >
+                Jahfar Ali
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
     </footer>
   );

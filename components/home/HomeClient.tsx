@@ -12,6 +12,7 @@ import React, {
 import Navbar from "@/components/layout/Navbar";
 import HeroBanner, { type CarouselItem } from "@/components/home/HeroBanner";
 import OfferCards from "@/components/home/OfferCard";
+import TodayGoldRate from "@/components/home/TodayGoldRate";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import Footer from "@/components/layout/Footer";
 import LoginModal from "@/components/auth/LoginModal";
@@ -146,6 +147,7 @@ export default function HomeClient({
           <HeroBanner slides={carouselData} />
           <CategoryGrid categories={categories} />
           <OfferCards offers={offers} />
+          <TodayGoldRate />
         </main>
         <Footer />
       </div>

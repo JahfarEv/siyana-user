@@ -274,6 +274,7 @@ export interface Product extends BaseEntity {
   sku?: string;
   availability?: "In Stock" | "Low Stock" | "Out of Stock";
   category: ProductCategory;
+  categoryId?: string | number;
   brand?: string;
 }
 
@@ -350,6 +351,7 @@ export interface ProductCardProps {
   onAddToCart: (product: Product) => void;
   onShowLoginModal: () => void;
   viewMode?: 'grid' | 'list';
+  showWishlist?: boolean;
 }
 
 export interface CategoryCardProps {

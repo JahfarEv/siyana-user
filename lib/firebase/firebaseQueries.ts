@@ -9,6 +9,25 @@ import {
 } from "firebase/auth";
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
+
+const serializeFirestoreData = <T>(data: T): T =>
+  JSON.parse(
+    JSON.stringify(data, (_key, value: unknown) => {
+      if (
+        value &&
+        typeof value === "object" &&
+        "seconds" in value &&
+        typeof value.seconds === "number" &&
+        "nanoseconds" in value &&
+        typeof value.nanoseconds === "number"
+      ) {
+        return new Date(value.seconds * 1000).toISOString();
+      }
+
+      return value;
+    })
+  ) as T;
+
 export const fetchProducts = async () => {
   const querySnapshot = await getDocs(collection(db, "products"));
   return querySnapshot.docs.map((doc) => ({
@@ -100,7 +119,7 @@ export const fetchCategories = async (): Promise<Category[]> => {
       ...doc.data(),
     })) as Category[];
 
-    return data.reverse();;
+    return serializeFirestoreData(data.reverse());
   } catch (error: unknown) {
     console.error("❌ Category Fetch Error:", error);
 
@@ -136,7 +155,9 @@ export const fetchProductsByCategory = async (categoryId: string): Promise<Produ
       }
     }
 
-    return Array.from(productsById.values()) as Product[];
+    return serializeFirestoreData(
+      Array.from(productsById.values()) as Product[]
+    );
   } catch (error) {
     console.error("❌ Product Fetch Error:", error);
     throw new Error("Failed to fetch products");

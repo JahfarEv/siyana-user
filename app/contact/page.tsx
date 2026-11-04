@@ -1,6 +1,16 @@
 'use client';
 import { useState, FormEvent, ReactElement } from 'react';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  MessageCircle,
+  Sparkles,
+  Loader2,
+  CheckCircle2,
+} from 'lucide-react';
 import Footer from '@/components/layout/Footer';
 import NavbarWrapper from '@/components/layout/NavbarWrapper';
 
@@ -12,155 +22,241 @@ interface ContactForm {
   message: string;
 }
 
-export default function ContactPage():  ReactElement {
+interface Branch {
+  name: string;
+  address: string;
+  phone: string;
+  whatsapp: string;
+}
+
+const BRANCHES: Branch[] = [
+  {
+    name: 'Vengara',
+    address: 'Vengara, Malappuram, Kerala',
+    phone: '+91 89389 16916',
+    whatsapp: '918938916916',
+  },
+  {
+    name: 'Othukkungal',
+    address: 'Othukkungal, Malappuram, Kerala',
+    phone: '+91 72329 16916',
+    whatsapp: '917232916916',
+  },
+  {
+    name: 'Kizhisseri',
+    address: 'Kizhisseri, Malappuram, Kerala',
+    phone: '+91 76999 16916',
+    whatsapp: '917699916916',
+  },
+];
+
+export default function ContactPage(): ReactElement {
   const [form, setForm] = useState<ContactForm>({
     name: '',
     email: '',
     phone: '',
     subject: '',
-    message: ''
+    message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value
-    });
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ): void => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setForm({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: ''
-    });
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) throw new Error('Failed to send');
+
+      setIsSubmitted(true);
+      setForm({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch {
+      setError(
+        'Something went wrong. Please try again or reach us via WhatsApp.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const contactInfo = [
-    {
-      icon: MapPin,
-      title: 'Visit Our Store',
-      details: ['Vengara, Malappuram', 'Kerala, India - 676304'],
-      link: '#'
-    },
-    {
-      icon: Phone,
-      title: 'Call Us',
-      details: ['+91 98765 43210', '+91 98765 43211'],
-      link: 'tel:+919876543210'
-    },
-    {
-      icon: Mail,
-      title: 'Email Us',
-      details: ['siyanagoldndiamonds@gmail.com', 'support@siyanagold.com'],
-      link: 'mailto:siyanagoldndiamonds@gmail.com'
-    },
-    {
-      icon: Clock,
-      title: 'Store Hours',
-      details: ['Monday - Sunday: 9:00 AM - 9:00 PM', 'Open all days'],
-      link: '#'
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fbfaf7]">
       <NavbarWrapper />
-      
+
       {/* Hero Section */}
-      <section className="bg-linear-to-r from-amber-500 to-yellow-400 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl font-bold text-white mb-6">Contact Us</h1>
-          <p className="text-xl text-amber-100 max-w-3xl mx-auto">
-            Get in touch with us. We&apos;re here to help you with all your jewelry needs.
-          </p>
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#278899] via-[#1f7a89] to-[#176b78] py-16 sm:py-20">
+        <div className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 -left-16 h-64 w-64 rounded-full bg-[#a87936]/20 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/90">
+            <Sparkles className="h-3.5 w-3.5" />
+            Get In Touch
+          </span>
+          <h1 className="mt-4 font-serif text-4xl font-bold text-white sm:text-5xl">
+            Contact Us
+          </h1>
+       
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* LEFT: Branches & Info */}
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Get in Touch</h2>
-            <p className="text-lg text-gray-600 mb-8">
-              Have questions about our jewelry collection? Need assistance with your order? 
-              We&apos;re here to help! Reach out to us through any of the following methods.
-            </p>
-
-            <div className="space-y-6">
-              {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center shrink-0">
-                    <item.icon className="w-6 h-6 text-amber-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
-                    {item.details.map((detail, idx) => (
-                      <p key={idx} className="text-gray-600 mb-1">{detail}</p>
-                    ))}
-                    {item.link !== '#' && (
-                      <a
-                        href={item.link}
-                        className="text-amber-600 hover:text-amber-700 font-medium"
-                      >
-                        Contact Now
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
+            <div className="mb-6">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#a87936]">
+                Our Locations
+              </p>
+              <h2 className="font-serif text-2xl font-bold text-[#172b43] sm:text-3xl">
+                Visit Our Branches
+              </h2>
+              <p className="mt-2 text-sm text-slate-600 sm:text-base">
+                Walk in to explore our collection, or start a WhatsApp chat with
+                the nearest branch for instant assistance.
+              </p>
             </div>
 
-            {/* Map Section */}
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Find Us</h3>
-              <div className="bg-gray-200 rounded-2xl h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600">Map integration coming soon</p>
-                  <p className="text-sm text-gray-500 mt-2">Vengara, Malappuram, Kerala</p>
+            {/* Branch Cards */}
+            <div className="space-y-4">
+              {BRANCHES.map((branch) => {
+                const whatsappUrl = `https://wa.me/${
+                  branch.whatsapp
+                }?text=${encodeURIComponent(
+                  `Hi Siyana Gold & Diamonds (${branch.name}), I'd like to enquire about your jewellery collection.`
+                )}`;
+                return (
+                  <div
+                    key={branch.name}
+                    className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-[#176b78]/40 hover:shadow-md"
+                  >
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#e8f1f1] text-[#176b78]">
+                            <MapPin className="h-4 w-4" />
+                          </span>
+                          <h3 className="font-serif text-lg font-semibold text-[#172b43]">
+                            {branch.name}
+                          </h3>
+                        </div>
+                        <p className="mt-2 text-sm text-slate-500">
+                          {branch.address}
+                        </p>
+                        <a
+                          href={`tel:${branch.phone.replace(/\s/g, '')}`}
+                          className="mt-2 inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 transition hover:text-[#176b78]"
+                        >
+                          <Phone className="h-3.5 w-3.5 text-[#176b78]" />
+                          {branch.phone}
+                        </a>
+                      </div>
+                      <a
+                        href={whatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1ebe5b] active:scale-[0.98]"
+                      >
+                        <MessageCircle className="h-4 w-4" />
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Other contact info */}
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex items-start gap-3 rounded-xl border border-[#eee9e1] bg-white p-4">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#f7eddd] text-[#a66a1c]">
+                  <Mail className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-[#172b43]">
+                    Email Us
+                  </h3>
+                  <a
+                    href="mailto:siyanagoldndiamonds@gmail.com"
+                    className="mt-1 block break-words text-xs text-slate-600 transition hover:text-[#176b78] sm:text-sm"
+                  >
+                    siyanagoldndiamonds@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 rounded-xl border border-[#eee9e1] bg-white p-4">
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#e8f1f1] text-[#176b78]">
+                  <Clock className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-[#172b43]">
+                    Store Hours
+                  </h3>
+                  <p className="mt-1 text-xs text-slate-600 sm:text-sm">
+                    Monday – Sunday
+                  </p>
+                  <p className="text-xs text-slate-500 sm:text-sm">
+                    9:00 AM – 9:00 PM
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="bg-gray-50 rounded-2xl p-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Send us a Message</h2>
-            
+          {/* RIGHT: Contact Form */}
+          <div className="rounded-2xl border border-[#ece7df] bg-white p-6 shadow-sm sm:p-8">
+            <h2 className="font-serif text-2xl font-bold text-[#172b43] sm:text-3xl">
+              Send us a Message
+            </h2>
+            <p className="mt-2 text-sm text-slate-500">
+              Fill out the form and our team will get back to you within 24
+              hours.
+            </p>
+
             {isSubmitted ? (
-              <div className="text-center py-8">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 h-8 text-green-600" />
+              <div className="mt-8 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
+                  <CheckCircle2 className="h-8 w-8 text-emerald-600" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h3>
-                <p className="text-gray-600 mb-6">
-                  Thank you for contacting us. We&apos;ll get back to you within 24 hours.
+                <h3 className="mt-4 text-xl font-bold text-[#172b43]">
+                  Message Sent!
+                </h3>
+                <p className="mt-2 text-sm text-slate-600">
+                  Thank you for contacting us. We&apos;ll respond shortly.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
-                  className="bg-amber-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors"
+                  className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#176b78] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#125763]"
                 >
                   Send Another Message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="name"
+                      className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600"
+                    >
                       Full Name *
                     </label>
                     <input
@@ -170,12 +266,15 @@ export default function ContactPage():  ReactElement {
                       value={form.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                      placeholder="Enter your full name"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#176b78] focus:ring-2 focus:ring-[#176b78]/20"
+                      placeholder="Your full name"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="email"
+                      className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600"
+                    >
                       Email Address *
                     </label>
                     <input
@@ -185,15 +284,18 @@ export default function ContactPage():  ReactElement {
                       value={form.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                      placeholder="Enter your email"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#176b78] focus:ring-2 focus:ring-[#176b78]/20"
+                      placeholder="you@example.com"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="phone"
+                      className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600"
+                    >
                       Phone Number
                     </label>
                     <input
@@ -202,12 +304,15 @@ export default function ContactPage():  ReactElement {
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                      placeholder="Enter your phone number"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#176b78] focus:ring-2 focus:ring-[#176b78]/20"
+                      placeholder="+91"
                     />
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label
+                      htmlFor="subject"
+                      className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600"
+                    >
                       Subject *
                     </label>
                     <select
@@ -216,7 +321,7 @@ export default function ContactPage():  ReactElement {
                       value={form.subject}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#176b78] focus:ring-2 focus:ring-[#176b78]/20"
                     >
                       <option value="">Select a subject</option>
                       <option value="product-inquiry">Product Inquiry</option>
@@ -229,7 +334,10 @@ export default function ContactPage():  ReactElement {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-slate-600"
+                  >
                     Message *
                   </label>
                   <textarea
@@ -238,29 +346,40 @@ export default function ContactPage():  ReactElement {
                     value={form.message}
                     onChange={handleChange}
                     required
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    rows={5}
+                    className="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-[#176b78] focus:ring-2 focus:ring-[#176b78]/20"
                     placeholder="Tell us how we can help you..."
                   />
                 </div>
 
+                {error && (
+                  <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-amber-500 text-white py-4 rounded-lg font-semibold hover:bg-amber-600 disabled:bg-amber-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#176b78] px-5 py-3.5 text-sm font-semibold text-white shadow-md shadow-[#176b78]/20 transition hover:bg-[#125763] disabled:cursor-not-allowed disabled:bg-slate-400"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      <Loader2 className="h-5 w-5 animate-spin" />
                       Sending...
                     </>
                   ) : (
                     <>
-                      <Send className="w-5 h-5" />
+                      <Send className="h-4 w-4" />
                       Send Message
                     </>
                   )}
                 </button>
+
+                <p className="text-center text-xs text-slate-400">
+                  Your details are safe with us. We never share your
+                  information.
+                </p>
               </form>
             )}
           </div>
