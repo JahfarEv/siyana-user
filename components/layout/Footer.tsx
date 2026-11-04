@@ -654,25 +654,25 @@ const Footer: React.FC = () => {
       {/* Gold top border */}
       <div className="h-[2px] bg-gradient-to-r from-transparent via-[#e9bf55] to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8 md:py-14">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-8 sm:py-10 md:py-14">
         {/* Main footer */}
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 mb-6">
+        <div className="mb-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-8 lg:mb-6 lg:grid-cols-12 lg:gap-8">
           {/* Brand */}
-          <div className="lg:col-span-4">
+          <div className="col-span-2 lg:col-span-4">
             <Link href="/" className="inline-flex">
-              <div className="relative h-24 w-56 sm:h-48 sm:w-64">
+              <div className="relative h-20 w-48 sm:h-32 sm:w-56 lg:h-40 lg:w-64">
                 <Image
                   src="/images/siyanaFooter.png"
                   alt="Siyana Gold and Diamonds"
                   fill
                   priority={false}
-                  sizes="256px"
+                  sizes="(min-width: 1024px) 256px, 224px"
                   className="object-contain"
                 />
               </div>
             </Link>
 
-            <p className="mt-3 max-w-sm text-sm leading-7 text-white/65">
+            <p className="mt-2 max-w-sm text-sm leading-6 text-white/65 sm:mt-3 sm:leading-7">
               Discover timeless elegance and exquisite craftsmanship at Siyana
               Gold and Diamonds. Explore beautiful collections crafted to make
               every occasion special.
@@ -680,12 +680,12 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Customer service */}
-          <div className="lg:col-span-3">
-            <h4 className="mb-5 text-base font-semibold text-white">
+          <div className="col-span-1 lg:col-span-3">
+            <h4 className="mb-3 text-sm font-semibold text-white sm:mb-5 sm:text-base">
               Customer Care
             </h4>
 
-            <ul className="space-y-4 text-sm text-white/65">
+            <ul className="space-y-3 text-sm text-white/65 sm:space-y-4">
               <li>
                 <Link
                   href="/contact"
@@ -707,12 +707,12 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Quick links */}
-          <div className="lg:col-span-3">
-            <h4 className="mb-5 text-base font-semibold text-white">
+          <div className="col-span-1 lg:col-span-3">
+            <h4 className="mb-3 text-sm font-semibold text-white sm:mb-5 sm:text-base">
               Quick Links
             </h4>
 
-            <ul className="space-y-4 text-sm text-white/65">
+            <ul className="space-y-3 text-sm text-white/65 sm:space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
@@ -727,12 +727,12 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Contact + Social */}
-          <div className="lg:col-span-2">
-            <h4 className="mb-5 text-base font-semibold text-white">
+          <div className="col-span-2 lg:col-span-2">
+            <h4 className="mb-3 text-sm font-semibold text-white sm:mb-5 sm:text-base">
               Get in Touch
             </h4>
 
-            <p className="mb-4 text-sm leading-6 text-white/60">
+            <p className="mb-3 text-sm leading-6 text-white/60 sm:mb-4">
               Have questions? We are happy to help you.
             </p>
 
@@ -744,7 +744,7 @@ const Footer: React.FC = () => {
               siyanagoldndiamonds@gmail.com
             </a>
 
-            <div className="mt-6">
+            <div className="mt-5 sm:mt-6">
               <h4 className="mb-3 text-sm font-semibold tracking-wide text-[#f0cf7a]">
                 FOLLOW US
               </h4>
@@ -767,16 +767,16 @@ const Footer: React.FC = () => {
           </div>
           
         </div>
-   <div >
+   <div>
             <h4 className="mb-3 text-center text-sm font-semibold tracking-wide text-[#f0cf7a] sm:text-left">
               OUR BRANCHES
             </h4>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {branches.map((branch) => (
                 <div
                   key={branch.name}
-                  className="flex flex-1 items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2.5 transition-colors hover:border-[#e9bf55]/40"
+                  className="flex flex-col items-start gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-3 transition-colors hover:border-[#e9bf55]/40 sm:justify-between"
                 >
                   <div className="flex items-center gap-2">
                     <MapPin size={15} className="shrink-0 text-[#f0cf7a]" />
@@ -785,12 +785,12 @@ const Footer: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex w-full items-center justify-between gap-2 sm:gap-3">
                     <a
                       href={`tel:+${branch.phone}`}
-                      className="flex items-center gap-1.5 text-xs text-white/70 transition-colors hover:text-[#f0cf7a]"
+                      className="flex min-w-0 items-center gap-1.5 text-xs text-white/70 transition-colors hover:text-[#f0cf7a]"
                     >
-                      <Phone size={13} />
+                      <Phone size={13} className="shrink-0" />
                       {branch.display}
                     </a>
 
@@ -810,7 +810,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
         {/* Bottom footer */}
-        <div className="mt-6 border-t border-white/10 pt-6">
+        <div className="mt-6 border-t border-white/10 pt-5 sm:pt-6">
           {/* Branches (inline format) */}
        
 
@@ -827,7 +827,7 @@ const Footer: React.FC = () => {
             ))}
           </div> */}
 
-          <div className="flex flex-col items-center justify-between gap-3 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+          <div className="flex flex-col items-center justify-between gap-3 text-center text-xs leading-5 text-white/50 sm:flex-row sm:text-left">
             <p>
               © {new Date().getFullYear()} Siyana Gold and Diamonds. All rights
               reserved.
