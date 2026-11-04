@@ -718,8 +718,8 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#278899] shadow-md overflow-visible rounded-3xl m-2 sm:m-4">
-        <div className="relative flex items-center justify-between px-3 sm:px-4 py-2 h-16 sm:h-20">
+      <header className="sticky top-0 z-50 bg-[#0a2c35] shadow-md overflow-visible rounded-3xl m-2 sm:m-4">
+        <div className="relative flex items-center justify-between  py-2 h-16 sm:h-22">
           {/* Logo */}
           {/* Logo - Maximum size */}
           <div
@@ -727,12 +727,14 @@ const Navbar: React.FC<NavbarProps> = ({
             onClick={() => router.push("/")}
           >
             <Image
-              src="/images/web logo.png"
+              src="/images/siyana.png"
               alt="Siyana Gold & Diamonds"
               width={320}
               height={128}
               sizes="220px"
-              className="h-48 w-auto sm:h-64 md:h-78 object-contain mt-2 md:mt-5"
+              // className="h-48 w-auto sm:h-64 md:h-78 object-contain mt-2 md:mt-5"
+                            className="h-42 w-auto sm:h-64 object-contain"
+
               onError={handleImageError}
               priority
             />

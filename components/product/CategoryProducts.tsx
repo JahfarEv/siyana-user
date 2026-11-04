@@ -213,6 +213,7 @@ const CategoryProducts: React.FC<CategoryProductsProps> = ({
                   product={product}
                   onAddToCart={handleAddToCart}
                   onShowLoginModal={handleShowLoginModal}
+                  showWishlist={false}
                 />
               </div>
             ))}

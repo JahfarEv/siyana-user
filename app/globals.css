@@ -26,6 +26,38 @@
   z-index: 9999 !important;
 }
 
+
+/* Rotating gold border */
+.gold-border-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 40deg,
+    #e9bf55 90deg,
+    #fbeab0 120deg,
+    #e9bf55 150deg,
+    transparent 200deg,
+    transparent 360deg
+  );
+  animation: gold-spin 4s linear infinite;
+}
+
+@keyframes gold-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .gold-border-wrapper::before {
+    animation: none;
+    background: linear-gradient(135deg, #e9bf55, #b98a2e);
+  }
+}
 /* 
 :root {
   --background: #ffffff;

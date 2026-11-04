@@ -449,6 +449,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   onShowLoginModal,
   viewMode = "grid",
+  showWishlist = true,
 }): ReactElement => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -732,19 +733,21 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </button>
               )}
 
-              <button
-                type="button"
-                onClick={toggleWishlist}
-                aria-label="Toggle wishlist"
-                className="p-2 border border-gray-300 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors flex-shrink-0"
-              >
-                <Heart
-                  size={16}
-                  className={`sm:w-5 sm:h-5 ${
-                    isWishlisted ? "text-red-500 fill-red-500" : "text-gray-500"
-                  }`}
-                />
-              </button>
+              {showWishlist && (
+                <button
+                  type="button"
+                  onClick={toggleWishlist}
+                  aria-label="Toggle wishlist"
+                  className="p-2 border border-gray-300 rounded-lg hover:border-red-300 hover:bg-red-50 transition-colors flex-shrink-0"
+                >
+                  <Heart
+                    size={16}
+                    className={`sm:w-5 sm:h-5 ${
+                      isWishlisted ? "text-red-500 fill-red-500" : "text-gray-500"
+                    }`}
+                  />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -754,7 +757,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   // Grid View (Default) - Mobile Focused
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-200">
+    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 hover:shadow-lg">
       {/* Image Container - Clickable */}
       <Link
         href={`/product/${product.id}`}
@@ -801,56 +804,64 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
 
         {/* Quick Actions - Always visible on mobile, hover on desktop */}
-        <div className="absolute bottom-2 right-2 z-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-          <button
-            type="button"
-            onClick={toggleWishlist}
-            aria-label="Toggle wishlist"
-            className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
-          >
-            <Heart
-              size={18}
-              className={`${
-                isWishlisted ? "text-red-500 fill-red-500" : "text-gray-600"
-              }`}
-            />
-          </button>
-        </div>
+        {showWishlist && (
+          <div className="absolute bottom-2 right-2 z-10 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+            <button
+              type="button"
+              onClick={toggleWishlist}
+              aria-label="Toggle wishlist"
+              className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-colors"
+            >
+              <Heart
+                size={18}
+                className={`${
+                  isWishlisted ? "text-red-500 fill-red-500" : "text-gray-600"
+                }`}
+              />
+            </button>
+          </div>
+        )}
       </Link>
 
       {/* Product Info - Separate from Link */}
-      <div className="p-3 sm:p-4">
-        <div className="space-y-1 sm:space-y-2">
-          {/* Product Name - Clickable */}
-          <Link href={`/product/${product.id}`} className="block">
-            <h3 className="font-semibold text-gray-900 text-sm sm:text-base line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[3rem] hover:text-[#196b7a] transition-colors">
-              {product.name}
-            </h3>
-          </Link>
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
+        <div className="flex flex-1 flex-col space-y-1 sm:space-y-2">
+          <div className="flex items-start justify-between gap-2">
+            {/* Product Name - Clickable */}
+            <Link href={`/product/${product.id}`} className="min-w-0 flex-1">
+              <h3 className="font-semibold text-gray-900 text-sm sm:text-base line-clamp-2 leading-tight min-h-[2.5rem] sm:min-h-[3rem] hover:text-[#196b7a] transition-colors">
+                {product.name}
+              </h3>
+            </Link>
 
-          {/* Price - Mobile sized */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {hasPrice && (
-              <span className="text-[#196b7a] font-bold text-base sm:text-lg">
-                ₹{priceValue.toLocaleString()}
-              </span>
-            )}
-            {hasOriginalPrice && (
-              <span className="text-gray-500 line-through text-xs sm:text-sm">
-                ₹{originalPriceValue.toLocaleString()}
-              </span>
+            {/* Price */}
+            {(hasPrice || hasOriginalPrice) && (
+              <div className="flex shrink-0 flex-col items-end text-right">
+                {hasPrice && (
+                  <span className="text-sm font-bold text-[#196b7a] sm:text-base">
+                    ₹{priceValue.toLocaleString()}
+                  </span>
+                )}
+                {hasOriginalPrice && (
+                  <span className="text-xs text-gray-500 line-through">
+                    ₹{originalPriceValue.toLocaleString()}
+                  </span>
+                )}
+              </div>
             )}
           </div>
 
           {/* Description - Only show on larger screens */}
-          {product.shortDescription && (
-            <p className="hidden sm:block text-gray-600 text-sm line-clamp-1">
-              {product.shortDescription}
-            </p>
-          )}
+          <div className="hidden sm:block">
+            {product.shortDescription && (
+              <p className="line-clamp-1 text-sm text-gray-600">
+                {product.shortDescription}
+              </p>
+            )}
+          </div>
 
           {/* Action Buttons - Outside Link */}
-          <div className="pt-2 flex gap-2">
+          <div className="mt-auto flex gap-2 pt-2">
             <Link
               href={`/product/${product.id}`}
               className="flex-1 py-2 sm:py-2.5 bg-[#196b7a] text-white rounded-lg hover:bg-[#196b7a]/90 transition-colors text-sm font-medium flex items-center justify-center gap-1 sm:gap-2"
