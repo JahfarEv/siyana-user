@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Siyana Gold & Diamonds | Gold, Diamond & Silver Jewellery',
+  title: 'Siyana Gold and Diamonds | Gold, Diamond Jewellery',
   description: 'Shop premium gold and diamond jewellery: chains, necklaces, bangles, earrings and more.',
 };
 
