@@ -836,12 +836,12 @@ const Footer: React.FC = () => {
             <p>
               Developed by{" "}
               <a
-                href="https://www.jahfar.online/"
+                href="http://nexvecore.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-semibold text-[#f0cf7a] transition-colors hover:text-white"
               >
-                Jahfar Ali
+                Nexve Solutions
               </a>
             </p>
           </div>

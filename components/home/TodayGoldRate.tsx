@@ -342,9 +342,32 @@ import "react-loading-skeleton/dist/skeleton.css"; // ⬅ required for skeleton 
 import { useGoldRate } from "@/hooks/useCarousel";
 
 const goldTypes = [
-  { key: "Gold_24", karat: "24K", unit: "1g" },
-  { key: "Gold_22", karat: "22K", unit: "8g" },
-  { key: "Gold_18", karat: "18K", unit: "1g" },
+
+   {
+    keys: ["Gold_22_8g", "Gold_22_8G", "Gold_22_8", "Gold_22_8gm", "Gold_22"],
+    karat: "22K",
+    unit: "8g",
+    highlighted: true,
+  },
+  {
+    keys: ["Gold_22_1g", "Gold_22_1G", "Gold_22_1", "Gold_22_1gm"],
+    karat: "22K",
+    unit: "1g",
+    highlighted: false,
+  },
+ 
+  {
+    keys: ["Gold_18_1g", "Gold_18_1G", "Gold_18_1", "Gold_18_1gm", "Gold_18"],
+    karat: "18K",
+    unit: "1g",
+    highlighted: false,
+  },
+  {
+    keys: ["Gold_9_1g", "Gold_9_1G", "Gold_9_1", "Gold_9_1gm", "Gold_9"],
+    karat: "9K",
+    unit: "1g",
+    highlighted: false,
+  },
 ];
 
 const borderSheen = {
@@ -366,11 +389,15 @@ const TodayGoldRate: React.FC = () => {
   const createdDate =
     createdAtSeconds === null ? null : new Date(createdAtSeconds * 1000);
 
-  const getGoldRateValue = (key: string): string | number => {
-    const value = goldRateData?.[key];
-    return typeof value === "string" || typeof value === "number"
-      ? value
-      : "—";
+  const getGoldRateValue = (keys: string[]): string | number => {
+    for (const key of keys) {
+      const value = goldRateData?.[key];
+      if (typeof value === "string" || typeof value === "number") {
+        return value;
+      }
+    }
+
+    return "—";
   };
 
   const formatRate = (value: string | number): string => {
@@ -448,15 +475,15 @@ const TodayGoldRate: React.FC = () => {
           </div>
 
           {/* Rate cards */}
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {isLoading ? (
               // 🔄 Skeleton — mirrors the real card layout exactly
-              goldTypes.map((item, index) => (
+              goldTypes.map((item) => (
                 <div
-                  key={item.key}
+                  key={item.keys[0]}
                   className={`rounded-lg border px-2.5 py-2 ${
-                    index === 0
-                      ? "border-[#e9bf55]/45 bg-[#e9bf55]/[0.07]"
+                    item.highlighted
+                      ? "border-[#fbeab0] bg-gradient-to-br from-[#e9bf55]/25 to-[#e9bf55]/[0.08] shadow-[0_0_16px_rgba(233,191,85,0.2)] ring-1 ring-[#e9bf55]/40"
                       : "border-[#e9bf55]/15 bg-white/[0.04]"
                   }`}
                 >
@@ -475,19 +502,20 @@ const TodayGoldRate: React.FC = () => {
                   <div className="mt-1.5">
                     <Skeleton
                       width="85%"
-                      height={index === 0 ? 22 : 18}
+                      height={item.highlighted ? 22 : 18}
                       {...skeletonProps}
                     />
                   </div>
                 </div>
               ))
             ) : goldRates && !isError ? (
-              goldTypes.map((item, index) => (
+              goldTypes.map((item) => (
                 <div
-                  key={item.key}
+                  key={item.keys[0]}
+                  aria-label={`${item.karat} gold rate per ${item.unit}`}
                   className={`rounded-lg border px-2.5 py-2 ${
-                    index === 0
-                      ? "border-[#e9bf55]/45 bg-[#e9bf55]/[0.07]"
+                    item.highlighted
+                      ? "border-[#fbeab0] bg-gradient-to-br from-[#e9bf55]/25 to-[#e9bf55]/[0.08] shadow-[0_0_16px_rgba(233,191,85,0.2)] ring-1 ring-[#e9bf55]/40"
                       : "border-[#e9bf55]/15 bg-white/[0.04]"
                   }`}
                 >
@@ -501,15 +529,22 @@ const TodayGoldRate: React.FC = () => {
                   </div>
                   <p
                     className={`mt-1.5 bg-gradient-to-b from-[#fbeab0] via-[#e9bf55] to-[#b98a2e] bg-clip-text font-serif font-semibold tabular-nums leading-tight text-transparent ${
-                      index === 0 ? "text-xl" : "text-base sm:text-xl"
+                      item.highlighted
+                        ? "text-xl sm:text-2xl"
+                        : "text-base sm:text-xl"
                     }`}
                   >
-                    ₹{formatRate(getGoldRateValue(item.key))}
+                    ₹{formatRate(getGoldRateValue(item.keys))}
                   </p>
+                  {item.highlighted && (
+                    <span className="mt-1 inline-flex rounded-full bg-[#fbeab0]/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-[#fbeab0]">
+                      Featured
+                    </span>
+                  )}
                 </div>
               ))
             ) : (
-              <div className="col-span-3 rounded-lg border border-[#e9bf55]/15 bg-white/[0.04] py-4 text-center">
+              <div className="col-span-2 rounded-lg border border-[#e9bf55]/15 bg-white/[0.04] py-4 text-center sm:col-span-4">
                 <p className="text-xs text-white/70">
                   Today&apos;s rate isn&apos;t available right now.
                 </p>
